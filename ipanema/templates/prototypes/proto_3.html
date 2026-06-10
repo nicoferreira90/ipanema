@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Ipanema · Linen Study Hall{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --linen: #faf1e6;
+    --linen-deep: #f3e6d3;
+    --ink: #1c2e4a;
+    --coral: #fd7a56;
+    --raspberry: #de4a66;
+    --blush: #fca9a9;
+    --aqua: #80d8dd;
+    --green: #27ba76;
+    --teal: #369383;
+    --yellow: #f9d157;
+  }
+
+  body {
+    background: var(--linen);
+    color: var(--ink);
+    font-family: "Newsreader", serif;
+    font-optical-sizing: auto;
+  }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  [x-cloak] { display: none !important; }
+
+  .rule { border-color: var(--ink); }
+  .dotted-y { border-top: 2px dotted rgba(28, 46, 74, .4); border-bottom: 2px dotted rgba(28, 46, 74, .4); }
+
+  .link-under {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(28, 46, 74, .35);
+    transition: text-decoration-color .2s ease, color .2s ease;
+  }
+  .link-under:hover { text-decoration-color: var(--coral); color: var(--coral); }
+
+  .btn-ink {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    padding: .75rem 1.5rem;
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    background: var(--ink);
+    color: var(--linen);
+    transition: background .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-ink:hover { transform: translateY(-2px); box-shadow: 0 4px 0 rgba(28,46,74,.25); }
+  .btn-ink.coral { background: var(--coral); border-color: var(--coral); color: #fff8ef; }
+  .btn-ink.ghost { background: transparent; color: var(--ink); }
+  .btn-ink.ghost:hover { background: var(--linen-deep); }
+
+  /* ---------- module cards ---------- */
+  .mod-card {
+    background: #fffaf2;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .mod-card:hover { transform: translateY(-5px); box-shadow: 0 7px 0 rgba(28, 46, 74, .9); }
+  .mod-head {
+    padding: .65rem 1.25rem;
+    border-bottom: 1.5px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mod-card.muted { border-style: dashed; background: transparent; }
+  .mod-card.muted:hover { transform: none; box-shadow: none; }
+
+  .progress-track {
+    height: 7px;
+    border: 1px solid var(--ink);
+    border-radius: 99px;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent 0 5px,
+      rgba(28, 46, 74, .12) 5px 10px
+    );
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--green); width: 0%; border-radius: 99px; }
+
+  .lesson-li { border-bottom: 1.5px dotted rgba(28, 46, 74, .3); }
+  .lesson-li:last-child { border-bottom: none; }
+
+  .stat-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid var(--ink); }
+
+  .step-col { border-left: 2px solid var(--ink); }
+
+  .reveal { opacity: 0; transform: translateY(18px); animation: rise .65s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+</style>
+{% endblock %}
+
+{% block body %}
+<div style="border-top: 5px solid var(--coral)">
+<!-- nav -->
+<header style="border-bottom: 1.5px solid var(--ink)">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+    <a href="/3/" class="text-[1.6rem] font-semibold tracking-tight" style="font-variation-settings:'opsz' 72">
+      ipanema<span style="color:var(--coral)">*</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 mono text-[.8rem]">
+      <a class="link-under" href="#catalog">Catalog</a>
+      <a class="link-under" href="#method">Method</a>
+      <a class="link-under" href="#">Progress</a>
+      <a class="link-under" href="#">About</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#" class="btn-ink ghost !py-2 !px-4">Sign in</a>
+      <a href="#catalog" class="btn-ink coral !py-2 !px-4">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6">
+  <!-- breadcrumb -->
+  <p class="mono text-[.74rem] mt-8 reveal" style="color:var(--teal)">
+    <a href="/3/" class="link-under">curriculum</a> <span class="opacity-50">/</span> fluent-python
+  </p>
+
+  <!-- headline -->
+  <h1 class="font-medium leading-[1.04] mt-6 reveal" style="font-size: clamp(2.8rem, 6.5vw, 4.8rem); font-variation-settings:'opsz' 72; animation-delay:.1s">
+    Fluent Python,<br><em style="color:var(--raspberry)">taught properly.</em>
+  </h1>
+
+  <!-- intro two-col -->
+  <div class="grid md:grid-cols-[1.5fr_1fr] gap-10 mt-10 reveal" style="animation-delay:.22s">
+    <div class="text-[1.12rem] leading-relaxed pr-4">
+      <p>
+        Ipanema is a study companion to Luciano Ramalho's <em>Fluent Python</em> — the deepest
+        tour of the language's core API ever written. Each of its chapters becomes a module:
+        short lessons to read, then exercises you solve in your own text editor and submit
+        for checking. No videos, no fill-in-the-blanks. Just you, the REPL, and the ideas
+        that make Python <em>Python</em>.
+      </p>
+    </div>
+    <div class="md:border-l md:pl-10" style="border-color: rgba(28,46,74,.3)">
+      <h2 class="mono text-[.74rem] font-semibold uppercase tracking-[.18em] mb-4" style="color:var(--teal)">The five parts</h2>
+      <ul class="space-y-2.5 text-[1.05rem]">
+        <li><a href="#catalog" class="link-under">I · Data Structures</a></li>
+        <li><a href="#" class="link-under opacity-60">II · Functions as Objects</a></li>
+        <li><a href="#" class="link-under opacity-60">III · Classes and Protocols</a></li>
+        <li><a href="#" class="link-under opacity-60">IV · Control Flow</a></li>
+        <li><a href="#" class="link-under opacity-60">V · Metaprogramming</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- stats strip -->
+  <div class="dotted-y mt-12 py-4 flex flex-wrap gap-x-10 gap-y-2 mono text-[.76rem] reveal" style="animation-delay:.34s">
+    <span><span class="stat-dot" style="background:var(--coral)"></span>&nbsp; {{ total_planned }} modules planned</span>
+    <span><span class="stat-dot" style="background:var(--green)"></span>&nbsp; {{ available_modules|length }} available today</span>
+    <span><span class="stat-dot" style="background:var(--yellow)"></span>&nbsp; 18 editor-checked exercises</span>
+    <span><span class="stat-dot" style="background:var(--aqua)"></span>&nbsp; self-paced, free</span>
+  </div>
+
+  <!-- catalog -->
+  <section id="catalog" class="mt-16">
+    <div class="flex items-baseline justify-between flex-wrap gap-3 mb-8">
+      <h2 class="text-4xl font-medium" style="font-variation-settings:'opsz' 72">Modules</h2>
+      <p class="mono text-[.76rem] opacity-70">sorted by chapter · {{ modules|length }} listed</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-7">
+      {% for m in available_modules %}
+      <article class="mod-card reveal" style="animation-delay:{{ forloop.counter0 }}50ms" x-data="{ open: false }">
+        <div class="mod-head" style="background:var(--{{ m.color }})">
+          <span class="mono text-[.74rem] font-semibold uppercase tracking-[.14em]" style="color:#fff8ef">module {{ m.number|stringformat:"02d" }}</span>
+          <span class="mono text-[.7rem]" style="color:#fff8ef">{{ m.lessons|length }} lessons · {{ m.exercise_count }} exercises</span>
+        </div>
+        <div class="p-6 flex flex-col grow">
+          <h3 class="text-[1.75rem] font-semibold leading-snug">{{ m.title }}</h3>
+          <p class="italic text-[1.02rem] mt-1" style="color:var(--teal)">{{ m.tagline }}</p>
+          <p class="text-[.98rem] leading-relaxed mt-3 opacity-90">{{ m.blurb }}</p>
+
+          <button class="mono text-[.74rem] font-semibold mt-5 self-start link-under" style="color:var(--teal)"
+                  @click="open = !open" x-text="open ? 'hide syllabus −' : 'view syllabus +'">view syllabus +</button>
+          <ul class="mt-3 mono text-[.8rem]" x-show="open" x-cloak
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 -translate-y-1"
+              x-transition:enter-end="opacity-100 translate-y-0">
+            {% for lesson in m.lessons %}
+            <li class="lesson-li py-2 flex gap-3">
+              <span style="color:var(--coral)">{{ m.number }}.{{ forloop.counter }}</span> {{ lesson }}
+            </li>
+            {% endfor %}
+          </ul>
+
+          <div class="mt-auto pt-6">
+            <div class="flex justify-between mono text-[.7rem] mb-1.5 opacity-70">
+              <span>progress</span><span>0%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <div class="flex items-center justify-between mt-5">
+              <span class="mono text-[.72rem] opacity-70">~2h · beginner-friendly</span>
+              <a href="#" class="btn-ink !py-2 !px-4">Start module →</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+
+      {% for m in coming_modules %}
+      <article class="mod-card muted reveal" style="animation-delay:{{ forloop.counter0 }}75ms">
+        <div class="mod-head" style="border-bottom-style: dashed; background:var(--linen-deep)">
+          <span class="mono text-[.74rem] font-semibold uppercase tracking-[.14em] opacity-60">module {{ m.number|stringformat:"02d" }}</span>
+          <span class="mono text-[.68rem] font-semibold uppercase tracking-[.12em] px-2 py-0.5 rounded-sm" style="background:var(--yellow)">in preparation</span>
+        </div>
+        <div class="p-6">
+          <h3 class="text-[1.55rem] font-semibold leading-snug opacity-55">{{ m.title }}</h3>
+          <p class="italic text-[1rem] mt-1 opacity-45">{{ m.tagline }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <p class="mono text-[.78rem] text-center mt-12 opacity-70">
+      … and {{ total_planned|add:"-6" }} more on the way — the full book, eventually.
+    </p>
+  </section>
+
+  <!-- method -->
+  <section id="method" class="mt-24 mb-24">
+    <h2 class="text-4xl font-medium mb-10" style="font-variation-settings:'opsz' 72">How checking works</h2>
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="step-col pl-6">
+        <p class="mono text-[.8rem] font-semibold" style="color:var(--coral)">01</p>
+        <h3 class="text-xl font-semibold mt-2">Read the lesson</h3>
+        <p class="text-[.95rem] leading-relaxed mt-2 opacity-85">Focused readings, ten minutes each. The idiom, the mechanism, and why the language was designed that way.</p>
+      </div>
+      <div class="step-col pl-6">
+        <p class="mono text-[.8rem] font-semibold" style="color:var(--green)">02</p>
+        <h3 class="text-xl font-semibold mt-2">Solve in your editor</h3>
+        <p class="text-[.95rem] leading-relaxed mt-2 opacity-85">Each exercise is a real Python file. Open it in VS Code, vim, whatever — write until it feels Pythonic.</p>
+      </div>
+      <div class="step-col pl-6">
+        <p class="mono text-[.8rem] font-semibold" style="color:var(--raspberry)">03</p>
+        <h3 class="text-xl font-semibold mt-2">Submit &amp; iterate</h3>
+        <p class="text-[.95rem] leading-relaxed mt-2 opacity-85">Ipanema runs your solution against the chapter's checks and tells you exactly what to revisit.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- footer -->
+<footer style="background:var(--ink); color:var(--linen)">
+  <div class="max-w-6xl mx-auto px-6 py-12 flex flex-wrap items-center justify-between gap-6">
+    <div>
+      <p class="text-2xl font-semibold">ipanema<span style="color:var(--coral)">*</span></p>
+      <p class="text-sm mt-1 opacity-70">Learn Python in-depth.</p>
+    </div>
+    <p class="mono text-[.72rem] opacity-60">* companion to Fluent Python, 2nd ed., by Luciano Ramalho (O'Reilly)</p>
+  </div>
+</footer>
+</div>
+{% endblock %}

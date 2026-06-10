@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+
+{% block title %}Ipanema · Retro Tiki Poster{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Karla:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #fbf0dd;
+    --paper: #fff8ec;
+    --ink: #1d4f48;
+    --ink-deep: #143732;
+    --coral: #fd7a56;
+    --raspberry: #de4a66;
+    --blush: #fca9a9;
+    --aqua: #80d8dd;
+    --green: #27ba76;
+    --teal: #369383;
+    --yellow: #f9d157;
+  }
+
+  body {
+    background: var(--sand);
+    color: var(--ink);
+    font-family: "Karla", sans-serif;
+    overflow-x: hidden;
+  }
+  .display { font-family: "Fraunces", serif; }
+
+  /* ---------- grain ---------- */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: .14;
+    mix-blend-mode: multiply;
+  }
+
+  /* ---------- nav ---------- */
+  .nav-link {
+    font-size: .78rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    position: relative;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 100%; height: 2px;
+    background: var(--coral);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+  }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  /* ---------- poster hero ---------- */
+  .poster-frame {
+    border: 3px solid var(--ink);
+    outline: 2px solid var(--ink);
+    outline-offset: 6px;
+    box-shadow: 10px 12px 0 rgba(29, 79, 72, .25);
+  }
+  .sunset-sky {
+    background: linear-gradient(
+      to bottom,
+      var(--yellow) 0%,
+      #fbb650 30%,
+      var(--coral) 58%,
+      var(--raspberry) 100%
+    );
+  }
+  .sun-rays {
+    position: absolute;
+    width: 150vmin; height: 150vmin;
+    left: 50%; top: 38%;
+    transform: translate(-50%, -50%);
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 248, 220, .28) 0deg 5deg,
+      transparent 5deg 14deg
+    );
+    border-radius: 50%;
+    animation: rayspin 80s linear infinite;
+  }
+  @keyframes rayspin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .sun-disc {
+    position: absolute;
+    left: 50%; top: 38%;
+    transform: translate(-50%, -50%);
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #fff3c4, var(--yellow) 65%);
+    box-shadow: 0 0 80px 24px rgba(249, 209, 87, .55);
+  }
+  /* horizontal retro sun stripes */
+  .sun-disc::after {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 26px,
+      rgba(253, 122, 86, .5) 26px 32px
+    );
+    -webkit-mask: linear-gradient(to bottom, transparent 45%, black 48%);
+            mask: linear-gradient(to bottom, transparent 45%, black 48%);
+  }
+
+  .wave-band { position: absolute; left: -2%; width: 104%; }
+  .drift-slow { animation: drift 9s ease-in-out infinite alternate; }
+  .drift-fast { animation: drift 6s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { from { transform: translateX(-12px); } to { transform: translateX(12px); } }
+
+  .palm { position: absolute; bottom: -4px; }
+  .palm svg { display: block; }
+  .palm-sway { transform-origin: bottom center; animation: sway 7s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.8deg); } }
+
+  .hero-kicker {
+    letter-spacing: .42em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: .72rem;
+    color: var(--ink-deep);
+  }
+  .hero-title {
+    font-weight: 900;
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+    line-height: .9;
+    color: var(--ink-deep);
+    text-shadow: 4px 4px 0 rgba(255, 248, 236, .55);
+  }
+
+  .btn-tiki {
+    display: inline-block;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-size: .8rem;
+    padding: .9rem 1.8rem;
+    border: 2px solid var(--ink-deep);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink-deep);
+    box-shadow: 4px 4px 0 var(--ink-deep);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-tiki:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink-deep); }
+  .btn-tiki.primary { background: var(--coral); color: var(--paper); }
+
+  /* ---------- postage stamps ---------- */
+  .stamp {
+    padding: 11px;
+    background-image: radial-gradient(circle, transparent 0 5px, var(--paper) 5.5px);
+    background-size: 19px 19px;
+    background-position: center;
+    filter: drop-shadow(7px 8px 0 rgba(29, 79, 72, .22));
+    transition: transform .2s ease;
+  }
+  .stamp:hover { transform: rotate(0deg) translateY(-6px) !important; }
+  .stamp-inner {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    height: 100%;
+    position: relative;
+  }
+  .stamp-value {
+    font-family: "Fraunces", serif;
+    font-weight: 900;
+    line-height: 1;
+    border: 2px solid var(--ink);
+    padding: .35rem .55rem;
+  }
+  .stamp-cancel {
+    position: absolute;
+    top: 14px; right: -22px;
+    width: 110px; height: 110px;
+    border: 2.5px solid rgba(222, 74, 102, .55);
+    border-radius: 50%;
+    pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    transform: rotate(14deg);
+    color: rgba(222, 74, 102, .65);
+    font-size: .55rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-align: center;
+  }
+  .rubber-stamp {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    border: 3px solid var(--raspberry);
+    color: var(--raspberry);
+    font-weight: 900;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    padding: .4rem 1rem;
+    font-size: .85rem;
+    opacity: .8;
+    mix-blend-mode: multiply;
+  }
+
+  .lesson-row { border-top: 1.5px dashed rgba(29, 79, 72, .35); }
+
+  /* ---------- ticket stubs ---------- */
+  .ticket {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    position: relative;
+    box-shadow: 6px 6px 0 rgba(29, 79, 72, .18);
+  }
+  .ticket::before, .ticket::after {
+    content: "";
+    position: absolute;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--sand);
+    border: 2px solid var(--ink);
+    top: 50%;
+  }
+  .ticket::before { left: -13px; transform: translateY(-50%); border-left-color: transparent; }
+  .ticket::after { right: -13px; transform: translateY(-50%); border-right-color: transparent; }
+
+  /* ---------- reveal animation ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); animation: rise .8s cubic-bezier(.2, .7, .2, 1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  .wave-divider { display: block; width: 100%; }
+  [x-cloak] { display: none !important; }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- nav -->
+<header class="max-w-6xl mx-auto px-6 pt-7 pb-5 flex items-center justify-between">
+  <a href="/1/" class="display text-2xl font-black tracking-tight" style="color:var(--ink-deep)">
+    Ipanema&nbsp;<span style="color:var(--coral)">✺</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-10">
+    <a class="nav-link" href="#modules">Modules</a>
+    <a class="nav-link" href="#method">The Method</a>
+    <a class="nav-link" href="#">Progress</a>
+  </nav>
+  <a href="#modules" class="btn-tiki primary !py-2.5 !px-5">Start learning</a>
+</header>
+
+<!-- poster hero -->
+<section class="max-w-6xl mx-auto px-6 pt-4 pb-20">
+  <div class="poster-frame relative overflow-hidden grain reveal" style="animation-delay:.05s">
+    <div class="sunset-sky relative" style="min-height: 560px;">
+      <div class="sun-rays"></div>
+      <div class="sun-disc"></div>
+
+      <!-- water -->
+      <svg class="wave-band drift-slow" style="bottom: 86px" viewBox="0 0 1200 60" preserveAspectRatio="none" height="60">
+        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#369383" opacity=".85"/>
+      </svg>
+      <svg class="wave-band drift-fast" style="bottom: 46px" viewBox="0 0 1200 60" preserveAspectRatio="none" height="60">
+        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#2a7d70"/>
+      </svg>
+      <svg class="wave-band" style="bottom: 0" viewBox="0 0 1200 60" preserveAspectRatio="none" height="64">
+        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#1d4f48"/>
+      </svg>
+
+      <!-- palms -->
+      <div class="palm palm-sway" style="left: -30px">
+        <svg width="240" height="330" viewBox="0 0 240 330" fill="#143732">
+          <path d="M118 330 C 112 250 104 180 88 120 L 104 116 C 122 178 130 250 134 330 Z"/>
+          <path d="M96 122 C 60 96 24 92 -8 104 C 20 70 70 70 100 104 Z"/>
+          <path d="M96 118 C 70 84 40 64 2 60 C 44 40 88 70 104 108 Z"/>
+          <path d="M98 112 C 92 70 100 34 124 8 C 128 48 118 86 106 112 Z"/>
+          <path d="M102 112 C 124 80 156 62 196 62 C 168 92 132 108 108 116 Z"/>
+          <path d="M104 116 C 140 100 178 102 208 122 C 172 134 132 128 106 120 Z"/>
+          <circle cx="92" cy="118" r="9"/>
+          <circle cx="110" cy="124" r="9"/>
+        </svg>
+      </div>
+      <div class="palm palm-sway" style="right: -40px; animation-delay: -3.2s">
+        <svg width="220" height="280" viewBox="0 0 240 330" fill="#143732" style="transform: scaleX(-1)">
+          <path d="M118 330 C 112 250 104 180 88 120 L 104 116 C 122 178 130 250 134 330 Z"/>
+          <path d="M96 122 C 60 96 24 92 -8 104 C 20 70 70 70 100 104 Z"/>
+          <path d="M96 118 C 70 84 40 64 2 60 C 44 40 88 70 104 108 Z"/>
+          <path d="M98 112 C 92 70 100 34 124 8 C 128 48 118 86 106 112 Z"/>
+          <path d="M102 112 C 124 80 156 62 196 62 C 168 92 132 108 108 116 Z"/>
+          <path d="M104 116 C 140 100 178 102 208 122 C 172 134 132 128 106 120 Z"/>
+          <circle cx="92" cy="118" r="9"/>
+          <circle cx="110" cy="124" r="9"/>
+        </svg>
+      </div>
+
+      <!-- title copy -->
+      <div class="relative z-10 text-center pt-16 px-6">
+        <p class="hero-kicker reveal" style="animation-delay:.25s">Companion to Fluent Python &nbsp;·&nbsp; {{ total_planned }} modules planned</p>
+        <h1 class="display hero-title text-7xl md:text-9xl mt-6 reveal" style="animation-delay:.4s">IPANEMA</h1>
+        <p class="display italic text-2xl md:text-3xl mt-4 reveal" style="animation-delay:.55s; color:var(--ink-deep)">
+          Learn Python in&#8209;depth.
+        </p>
+      </div>
+    </div>
+
+    <!-- poster caption strip -->
+    <div class="flex items-center justify-between px-6 py-3 text-[.68rem] font-bold tracking-[.3em] uppercase"
+         style="background:var(--ink-deep); color:var(--sand)">
+      <span>Est. Chapter One</span>
+      <span class="hidden sm:block">Lessons · Exercises · Editor-checked</span>
+      <span>Rio de Janeiro ➳ REPL</span>
+    </div>
+  </div>
+
+  <div class="text-center mt-12 flex flex-wrap items-center justify-center gap-4 reveal" style="animation-delay:.7s">
+    <a href="#modules" class="btn-tiki primary">Begin the journey</a>
+    <a href="#method" class="btn-tiki">How it works</a>
+  </div>
+</section>
+
+<!-- modules -->
+<section id="modules" class="max-w-6xl mx-auto px-6 pb-24">
+  <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+    <div>
+      <p class="hero-kicker" style="color:var(--raspberry)">Philately for programmers</p>
+      <h2 class="display text-5xl font-black mt-2" style="color:var(--ink-deep)">The Collection</h2>
+    </div>
+    <p class="text-sm font-bold tracking-[.2em] uppercase opacity-70">{{ available_modules|length }} issued / {{ total_planned }} planned</p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-10">
+    {% for m in available_modules %}
+    <div class="stamp" style="transform: rotate({% cycle '-1.2deg' '1.4deg' %});" x-data="{ open: false }">
+      <div class="stamp-inner p-7">
+        <div class="stamp-cancel">par avion<br>·&nbsp;ipanema&nbsp;·</div>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-[.65rem] font-bold tracking-[.3em] uppercase" style="color:var(--teal)">{{ m.part }}</p>
+            <h3 class="display text-3xl font-black mt-2 leading-tight" style="color:var(--ink-deep)">{{ m.title }}</h3>
+          </div>
+          <div class="stamp-value text-2xl shrink-0" style="color:var(--{{ m.color }}); border-color:var(--ink)">
+            {{ m.number|stringformat:"02d" }}
+          </div>
+        </div>
+        <p class="display italic mt-3" style="color:var(--raspberry)">{{ m.tagline }}</p>
+        <p class="text-sm mt-3 leading-relaxed opacity-85">{{ m.blurb }}</p>
+
+        <button class="mt-5 text-[.7rem] font-extrabold tracking-[.25em] uppercase flex items-center gap-2"
+                style="color:var(--teal)" @click="open = !open">
+          <span x-text="open ? '− Fold itinerary' : '+ View itinerary'">+ View itinerary</span>
+        </button>
+        <ul class="mt-3" x-show="open" x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0">
+          {% for lesson in m.lessons %}
+          <li class="lesson-row py-2 flex items-baseline gap-3 text-sm">
+            <span class="font-bold" style="color:var(--coral)">{{ m.number }}.{{ forloop.counter }}</span>
+            <span>{{ lesson }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <div class="flex items-center justify-between mt-6 pt-4" style="border-top: 2px solid var(--ink)">
+          <span class="text-[.7rem] font-bold tracking-[.2em] uppercase opacity-70">{{ m.lessons|length }} lessons · {{ m.exercise_count }} exercises</span>
+          <a href="#" class="btn-tiki primary !py-2 !px-4 !text-[.68rem]">Begin →</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% for m in coming_modules %}
+    <div class="stamp opacity-80" style="transform: rotate({% cycle '1deg' '-1.3deg' '0.8deg' '-0.7deg' %});">
+      <div class="stamp-inner p-7" style="background:#f6e9d2">
+        <div class="rubber-stamp">Coming soon</div>
+        <div class="flex items-start justify-between gap-4 opacity-50">
+          <div>
+            <p class="text-[.65rem] font-bold tracking-[.3em] uppercase" style="color:var(--teal)">{{ m.part }}</p>
+            <h3 class="display text-3xl font-black mt-2 leading-tight" style="color:var(--ink-deep)">{{ m.title }}</h3>
+          </div>
+          <div class="stamp-value text-2xl shrink-0" style="color:var(--ink)">{{ m.number|stringformat:"02d" }}</div>
+        </div>
+        <p class="display italic mt-3 opacity-50" style="color:var(--raspberry)">{{ m.tagline }}</p>
+        <div class="mt-10 pt-4 opacity-50" style="border-top: 2px solid var(--ink)">
+          <span class="text-[.7rem] font-bold tracking-[.2em] uppercase">Unissued · awaits printing</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- method -->
+<section id="method" class="max-w-6xl mx-auto px-6 pb-28">
+  <p class="hero-kicker text-center" style="color:var(--raspberry)">Your boarding sequence</p>
+  <h2 class="display text-5xl font-black mt-2 text-center mb-12" style="color:var(--ink-deep)">The Method</h2>
+  <div class="grid md:grid-cols-3 gap-10">
+    <div class="ticket p-7 text-center">
+      <p class="display text-5xl font-black" style="color:var(--coral)">01</p>
+      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Read the lesson</h3>
+      <p class="text-sm mt-3 opacity-80 leading-relaxed">Short, focused readings distilled from each chapter — the idea, the idiom, the why.</p>
+    </div>
+    <div class="ticket p-7 text-center">
+      <p class="display text-5xl font-black" style="color:var(--teal)">02</p>
+      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Write the code</h3>
+      <p class="text-sm mt-3 opacity-80 leading-relaxed">Exercises open in a real text editor. No fill-in-the-blanks — actual Python, your hands.</p>
+    </div>
+    <div class="ticket p-7 text-center">
+      <p class="display text-5xl font-black" style="color:var(--raspberry)">03</p>
+      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Get it checked</h3>
+      <p class="text-sm mt-3 opacity-80 leading-relaxed">Ipanema verifies your solution and stamps your passport. On to the next idiom.</p>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer class="relative" style="background:var(--ink-deep); color:var(--sand)">
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" height="50" style="background:var(--sand)">
+    <path d="M0 25 Q 75 0 150 25 T 300 25 T 450 25 T 600 25 T 750 25 T 900 25 T 1050 25 T 1200 25 V 50 H 0 Z" fill="#143732"/>
+  </svg>
+  <div class="max-w-6xl mx-auto px-6 py-14 flex flex-wrap items-center justify-between gap-6">
+    <div>
+      <p class="display text-3xl font-black">Ipanema <span style="color:var(--coral)">✺</span></p>
+      <p class="text-sm mt-2 opacity-70">A study companion to <em>Fluent Python</em> by Luciano Ramalho.</p>
+    </div>
+    <p class="text-[.68rem] font-bold tracking-[.3em] uppercase opacity-60">Tall and tan and young and Pythonic</p>
+  </div>
+</footer>
+{% endblock %}

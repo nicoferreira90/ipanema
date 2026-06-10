@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Ipanema — UI Prototypes{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { background: #fbf0dd; color: #21433d; font-family: "Fraunces", serif; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .proto-link { transition: transform .18s ease, box-shadow .18s ease; }
+  .proto-link:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 #21433d; }
+</style>
+{% endblock %}
+
+{% block body %}
+<main class="min-h-screen flex items-center justify-center px-6 py-16">
+  <div class="w-full max-w-2xl">
+    <p class="mono text-xs tracking-[0.3em] uppercase mb-3" style="color:#de4a66">Design round one</p>
+    <h1 class="text-5xl font-black mb-2">Ipanema</h1>
+    <p class="text-lg italic mb-10" style="color:#369383">Learn Python in-depth — pick a prototype.</p>
+
+    <div class="grid gap-4">
+      <a href="/1/" class="proto-link block border-2 p-5 rounded-lg" style="border-color:#21433d; background:#fff7e8">
+        <span class="mono text-xs" style="color:#fd7a56">/1/ —</span>
+        <span class="text-xl font-bold ml-2">Retro Tiki Travel Poster</span>
+        <p class="text-sm mt-1 opacity-70">Vintage sunset poster, postage-stamp modules, Fraunces.</p>
+      </a>
+      <a href="/2/" class="proto-link block border-2 p-5 rounded-lg" style="border-color:#21433d; background:#fff7e8">
+        <span class="mono text-xs" style="color:#27ba76">/2/ —</span>
+        <span class="text-xl font-bold ml-2">Print-Shop Editorial</span>
+        <p class="text-sm mt-1 opacity-70">Stacked color blocks, chunky borders, ticket modules.</p>
+      </a>
+      <a href="/3/" class="proto-link block border-2 p-5 rounded-lg" style="border-color:#21433d; background:#fff7e8">
+        <span class="mono text-xs" style="color:#369383">/3/ —</span>
+        <span class="text-xl font-bold ml-2">Linen Study Hall</span>
+        <p class="text-sm mt-1 opacity-70">Structured catalog on warm linen, mono accents.</p>
+      </a>
+      <a href="/4/" class="proto-link block border-2 p-5 rounded-lg" style="border-color:#21433d; background:#fff7e8">
+        <span class="mono text-xs" style="color:#de4a66">/4/ —</span>
+        <span class="text-xl font-bold ml-2">Tropical Morning</span>
+        <p class="text-sm mt-1 opacity-70">Soft dawn gradients, floating doodles, playful & illustrated.</p>
+      </a>
+    </div>
+  </div>
+</main>
+{% endblock %}
