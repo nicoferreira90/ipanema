@@ -1,0 +1,39 @@
+<div class="postcard-back grid md:grid-cols-[1fr_1.15fr]" style="min-height: 380px">
+  <!-- message side: the mini lesson -->
+  <div class="lesson-pane">
+    <p class="mono text-[.62rem] uppercase tracking-[.22em]" style="color:var(--teal)">exercise 1.1 · the python data model</p>
+    <h3 class="display font-black text-xl mt-2 leading-snug" style="color:var(--ink-deep)">Make the deck a real sequence</h3>
+    <p class="text-[.82rem] mt-2 leading-relaxed opacity-85">
+      A <span class="mono text-[.76rem]">FrenchDeck</span> holds 52 cards, but Python can't
+      count them yet. Implement the special method that powers
+      <span class="mono text-[.76rem]">len()</span>.
+    </p>
+    <div class="code-pane mono mt-3">
+      <div><span class="c-kw">class</span> FrenchDeck:</div>
+      <div>    <span class="c-kw">def</span> __init__(self):</div>
+      <div>        self._cards = build_deck()  <span class="c-cm"># 52 cards</span></div>
+      <div> </div>
+      <div class="fixline" :class="fixed && 'isfixed'">    <span class="c-kw">def</span> <span x-text="fixed ? '__len__' : 'length'">length</span>(self):</div>
+      <div>        <span class="c-kw">return</span> len(self._cards)</div>
+    </div>
+    <p class="mono text-[.68rem] mt-3" style="color:var(--coral)">✦ goal: len(deck) == 52</p>
+  </div>
+
+  <!-- address side: the terminal -->
+  <div class="term">
+    <div class="term-head mono text-[.68rem]">
+      <span class="term-dot" style="background:var(--raspberry)"></span>
+      <span class="term-dot" style="background:var(--yellow)"></span>
+      <span class="term-dot" style="background:var(--green)"></span>
+      <span class="ml-2">exercise_01 — checks</span>
+      <button class="ml-auto mono text-[.68rem] opacity-70 hover:opacity-100 transition-opacity"
+              style="color:var(--yellow)" x-show="done" x-cloak @click="start()">↻ replay</button>
+    </div>
+    <div class="term-body mono" x-ref="term">
+      <template x-for="(l, i) in lines" :key="i">
+        <div class="term-line" :class="l.c"><span x-text="l.t"></span><span class="cursor" x-show="typing && i === lines.length - 1"></span></div>
+      </template>
+    </div>
+    <div class="passed-stamp" :class="stamped && 'show'">passed · ch 01</div>
+  </div>
+</div>

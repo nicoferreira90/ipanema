@@ -287,6 +287,120 @@
 
   .palette-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
 
+  /* ---------- postcard flip + demo ---------- */
+  /* Each face rotates itself (no preserve-3d): the front scene's animated
+     children get their own compositing layers in Chrome and ignore an
+     ancestor's hidden backface, so the away-side face is also hard-hidden
+     with a visibility switch at the flip's halfway point. */
+  .flip-wrap { display: grid; perspective: 1600px; }
+  .face {
+    grid-area: 1 / 1;
+    min-width: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition: transform .75s cubic-bezier(.35, .15, .2, 1), visibility 0s .32s;
+  }
+  .face-front { transform: rotateY(0deg); visibility: visible; }
+  .face-back  { transform: rotateY(-180deg); visibility: hidden; }
+  .flip-wrap.is-flipped .face-front { transform: rotateY(180deg); visibility: hidden; }
+  .flip-wrap.is-flipped .face-back  { transform: rotateY(0deg); visibility: visible; }
+
+  .postcard-back {
+    background: var(--cream);
+    border: 1.5px dashed rgba(31, 75, 68, .3);
+    border-radius: 4px;
+    text-align: left;
+    height: 100%;
+  }
+  .lesson-pane { padding: 1.3rem 1.4rem 1.4rem; }
+
+  .term {
+    background: var(--ink-deep);
+    border-radius: 14px;
+    margin: .9rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 249, 239, .08);
+  }
+  .term-head {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .65rem 1rem;
+    border-bottom: 1px solid rgba(255, 249, 239, .12);
+    color: rgba(255, 249, 239, .55);
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .term-body {
+    padding: .85rem 1rem 1.05rem;
+    font-size: .76rem;
+    line-height: 1.62;
+    color: #f3ecdc;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 280px;
+    max-height: 340px;
+  }
+  .term-line { white-space: pre-wrap; word-break: break-word; min-height: 1.2em; }
+  .term-line.cmd { color: #fff8ec; font-weight: 600; }
+  .term-line.dim { color: rgba(243, 236, 220, .5); }
+  .term-line.fail { color: #ff9d84; }
+  .term-line.hint { color: var(--yellow); }
+  .term-line.failmeta { color: #ff9d84; border-top: 1px dashed rgba(255, 157, 132, .4); margin-top: .35rem; padding-top: .35rem; }
+  .term-line.pass { color: #6ee7a8; }
+  .term-line.passmeta { color: #6ee7a8; border-top: 1px dashed rgba(110, 231, 168, .4); margin-top: .35rem; padding-top: .35rem; }
+  .cursor {
+    display: inline-block;
+    width: .55em; height: 1.05em;
+    vertical-align: -.15em;
+    background: #f3ecdc;
+    margin-left: 2px;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .code-pane {
+    background: #fdf6e7;
+    border: 1.5px solid rgba(31, 75, 68, .2);
+    border-radius: 10px;
+    padding: .75rem .9rem;
+    font-size: .72rem;
+    line-height: 1.65;
+    color: var(--ink);
+    overflow-x: auto;
+  }
+  .code-pane > div { white-space: pre; }
+  .c-kw { color: var(--raspberry); font-weight: 600; }
+  .c-cm { color: rgba(31, 75, 68, .45); font-style: italic; }
+  .fixline { border-radius: 4px; background: rgba(222, 74, 102, .16); transition: background .4s ease; }
+  .fixline.isfixed { background: rgba(39, 186, 118, .22); animation: fixflash .9s ease; }
+  @keyframes fixflash {
+    0% { background: rgba(249, 209, 87, .6); }
+    100% { background: rgba(39, 186, 118, .22); }
+  }
+
+  .passed-stamp {
+    position: absolute;
+    right: 16px; bottom: 16px;
+    border: 3px solid #6ee7a8;
+    color: #6ee7a8;
+    border-radius: 6px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    padding: .45rem 1rem;
+    font-size: .76rem;
+    transform: rotate(-9deg) scale(2.2);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .passed-stamp.show { animation: slam .5s cubic-bezier(.2, 1.4, .4, 1) forwards; }
+  @keyframes slam {
+    from { opacity: 0; transform: rotate(-9deg) scale(2.2); }
+    60%  { opacity: 1; transform: rotate(-9deg) scale(.92); }
+    to   { opacity: 1; transform: rotate(-9deg) scale(1); }
+  }
+
   .reveal { opacity: 0; transform: translateY(24px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
   @keyframes rise { to { opacity: 1; transform: none; } }
 </style>
@@ -354,7 +468,7 @@
 </header>
 
 <!-- hero -->
-<section class="relative z-10 max-w-5xl mx-auto px-6 pt-16 pb-20 text-center">
+<section class="relative z-10 max-w-5xl mx-auto px-6 pt-16 pb-20 text-center" x-data="postcardDemo()">
   <span class="eyebrow-chip reveal" style="animation-delay:.15s">
     <svg width="14" height="14" viewBox="0 0 30 30" fill="#fd7a56"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
     A Companion to Luciano Ramalho's <em class="serif-it not-italic">Fluent Python</em>
@@ -371,7 +485,7 @@
   </p>
   <div class="flex flex-wrap justify-center gap-4 mt-9 reveal" style="animation-delay:.55s">
     <a href="#modules" class="btn-sunrise">Start with chapter one</a>
-    <a href="#shore" class="btn-shell">How it works</a>
+    <button class="btn-shell" @click="toggle()" x-text="flipped ? '↩ Back to the beach' : 'How it works'">How it works</button>
   </div>
 
   <!-- understated postcard scene -->
@@ -383,7 +497,9 @@
       </div>
     </div>
     <div class="postmark">first<br>class<br>· 2026 ·</div>
-    <div class="postcard-scene grain-scene sunset-sky" style="height: 380px">
+    <div class="flip-wrap" :class="flipped && 'is-flipped'">
+    <div class="face face-front">
+    <div class="postcard-scene grain-scene sunset-sky" style="height: 100%; min-height: 380px">
       <div class="sun-rays"></div>
       <div class="sun-disc"></div>
       <svg class="wave-band drift-slow" style="bottom: 64px" viewBox="0 0 1200 60" preserveAspectRatio="none" height="52">
@@ -424,7 +540,11 @@
         <p class="display font-black text-4xl tracking-tight" style="color:#fff8ec; text-shadow: 3px 3px 0 rgba(20,55,50,.4)">IPANEMA</p>
       </div>
     </div>
-    <p class="serif-it text-center text-xl mt-4" style="color:var(--teal)">wish you were here — the REPL is lovely this time of year</p>
+    </div>
+    <div class="face face-back">{% include "partials/demo_postcard.html" %}</div>
+    </div>
+    <p class="serif-it text-center text-xl mt-4" style="color:var(--teal)" x-show="!flipped">wish you were here — the REPL is lovely this time of year</p>
+    <p class="serif-it text-center text-xl mt-4" style="color:var(--teal)" x-show="flipped" x-cloak>p.s. that's a real exercise from chapter one</p>
   </div>
 </section>
 
@@ -534,4 +654,93 @@
     </div>
   </div>
 </footer>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('postcardDemo', () => ({
+    flipped: false,
+    lines: [],
+    typing: false,
+    fixed: false,
+    stamped: false,
+    done: false,
+    _run: 0,
+    reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+
+    init() {
+      if (new URLSearchParams(location.search).has('demo')) {
+        this.$nextTick(() => this.toggle());
+      }
+    },
+
+    toggle() {
+      if (this.flipped) {
+        this.flipped = false;
+        this._run++;          // abort any running script
+        return;
+      }
+      this.flipped = true;
+      this.start();
+    },
+
+    async start() {
+      const run = ++this._run;
+      const alive = () => run === this._run;
+      this.lines = [];
+      this.fixed = false;
+      this.stamped = false;
+      this.done = false;
+      this.typing = false;
+
+      const sleep = (ms) => new Promise((r) => setTimeout(r, this.reduced ? 0 : ms));
+      const scroll = () => this.$nextTick(() => {
+        const el = this.$refs.term;
+        if (el) el.scrollTop = el.scrollHeight;
+      });
+      const out = (t, c = '') => { this.lines.push({ t, c }); scroll(); };
+      const type = async (cmd) => {
+        this.lines.push({ t: '$ ', c: 'cmd' });
+        this.typing = true;
+        for (const ch of cmd) {
+          if (!alive()) return;
+          this.lines[this.lines.length - 1].t += ch;
+          scroll();
+          await sleep(26);
+        }
+        this.typing = false;
+        await sleep(380);
+      };
+
+      await sleep(850); if (!alive()) return;
+      await type('ipanema check 1.1'); if (!alive()) return;
+      out('collecting exercise_01.py — 1 check', 'dim');
+      await sleep(700); if (!alive()) return;
+      out('✗ len(deck) raises TypeError:', 'fail');
+      out("  object of type 'FrenchDeck' has no len()", 'fail');
+      await sleep(500); if (!alive()) return;
+      out('  hint: len(x) calls x.__len__() —', 'hint');
+      out('        the dunder name is the contract', 'hint');
+      await sleep(350); if (!alive()) return;
+      out('1 failed · 0.31s', 'failmeta');
+      await sleep(1200); if (!alive()) return;
+
+      this.fixed = true;
+      out('', '');
+      out('… you fix exercise_01.py in your editor', 'dim');
+      await sleep(1400); if (!alive()) return;
+
+      await type('ipanema check 1.1'); if (!alive()) return;
+      out('collecting exercise_01.py — 1 check', 'dim');
+      await sleep(700); if (!alive()) return;
+      out('✓ len(deck) == 52', 'pass');
+      await sleep(400); if (!alive()) return;
+      out('1 passed · 0.28s — Pythonic! ☀', 'passmeta');
+      await sleep(450); if (!alive()) return;
+      this.stamped = true;
+      this.done = true;
+      scroll();
+    },
+  }));
+});
+</script>
 {% endblock %}
