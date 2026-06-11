@@ -1,0 +1,22 @@
+{% extends "account/auth_base.html" %}
+
+{% block title %}Sign up — Ipanema{% endblock %}
+
+{% block auth_eyebrow %}First visit{% endblock %}
+
+{% block auth_title %}Claim your spot on the <span class="serif-it" style="color:var(--coral); font-weight:400">sand</span>{% endblock %}
+
+{% block auth_content %}
+<form method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {% include "partials/form_fields.html" %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+  {% endif %}
+  <button type="submit" class="btn-sunrise w-full text-center mt-2">Sign up</button>
+</form>
+{% endblock %}
+
+{% block auth_footer %}
+Already have an account? <a class="font-bold" style="color:var(--coral)" href="{% url 'account_login' %}">Log in</a>
+{% endblock %}

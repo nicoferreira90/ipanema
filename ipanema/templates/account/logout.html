@@ -1,0 +1,21 @@
+{% extends "account/auth_base.html" %}
+
+{% block title %}Log out — Ipanema{% endblock %}
+
+{% block auth_eyebrow %}Heading out?{% endblock %}
+
+{% block auth_title %}Leaving the <span class="serif-it" style="color:var(--coral); font-weight:400">beach</span>{% endblock %}
+
+{% block auth_content %}
+<p class="mb-6 text-center opacity-90">Are you sure you want to log out?</p>
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+  {% endif %}
+  <div class="flex gap-3 justify-center">
+    <a href="{% url 'core:index' %}" class="btn-shell !py-2.5 !px-6">Stay</a>
+    <button type="submit" class="btn-sunrise !py-2.5 !px-6">Log out</button>
+  </div>
+</form>
+{% endblock %}

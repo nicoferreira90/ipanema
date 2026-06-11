@@ -1,6 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .sample_modules import MODULES, TOTAL_PLANNED
+
+
+@login_required
+def progress(request):
+    return render(request, "progress.html")
 
 
 def index(request):

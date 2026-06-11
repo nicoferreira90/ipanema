@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Your progress — Ipanema{% endblock %}
+
+{% block head %}
+{% include "partials/theme.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="page-grain"></div>
+
+{% include "partials/navbar.html" %}
+
+<section class="relative z-10 max-w-3xl mx-auto px-6 pt-20 pb-24 text-center">
+  <span class="eyebrow-chip reveal" style="animation-delay:.1s">
+    <svg width="14" height="14" viewBox="0 0 30 30" fill="#fd7a56"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+    Your progress
+  </span>
+  <h1 class="display font-black leading-tight mt-8 reveal" style="font-size: clamp(2.2rem, 5.5vw, 3.6rem); animation-delay:.22s">
+    Welcome back, <span class="serif-it" style="color:var(--coral); font-weight:400">{{ user.get_short_name }}</span>
+  </h1>
+  <p class="text-lg mt-6 max-w-md mx-auto leading-relaxed opacity-90 reveal" style="animation-delay:.35s">
+    Nothing here yet — your footprints in the sand will show up
+    as you work through the modules.
+  </p>
+  <div class="mt-9 reveal" style="animation-delay:.48s">
+    <a href="{% url 'core:index' %}#modules" class="btn-sunrise">Dive into chapter one</a>
+  </div>
+</section>
+{% endblock %}

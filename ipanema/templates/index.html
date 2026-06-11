@@ -3,48 +3,8 @@
 {% block title %}Ipanema — Learn Python in-depth{% endblock %}
 
 {% block head %}
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Serif:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Fragment+Mono&display=swap" rel="stylesheet">
+{% include "partials/theme.html" %}
 <style>
-  :root {
-    --cream: #fff9ef;
-    --paper: #fff8ec;
-    --sand-low: #fdf3e3;
-    --ink: #1f4b44;
-    --ink-deep: #14443e;
-    --coral: #fd7a56;
-    --orange: #f29a4a;
-    --raspberry: #de4a66;
-    --blush: #fca9a9;
-    --aqua: #80d8dd;
-    --green: #27ba76;
-    --teal: #369383;
-    --yellow: #f9d157;
-  }
-
-  body {
-    font-family: "Bricolage Grotesque", sans-serif;
-    color: var(--ink);
-    background:
-      radial-gradient(900px 480px at 80% -5%, rgba(249, 209, 87, .6), transparent 65%),
-      radial-gradient(760px 460px at 5% 18%, rgba(253, 122, 86, .28), transparent 60%),
-      radial-gradient(800px 500px at 75% 55%, rgba(252, 169, 169, .32), transparent 60%),
-      radial-gradient(600px 420px at 15% 80%, rgba(128, 216, 221, .3), transparent 60%),
-      linear-gradient(to bottom, #fdeacb 0%, #fdeede 45%, var(--sand-low) 100%);
-    background-attachment: fixed;
-    overflow-x: hidden;
-  }
-  .serif-it { font-family: "Instrument Serif", serif; font-style: italic; }
-  .display { font-family: "Fraunces", serif; }
-  .mono { font-family: "Fragment Mono", monospace; }
-  [x-cloak] { display: none !important; }
-
-  .page-grain {
-    position: fixed; inset: 0; z-index: 50; pointer-events: none;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-    opacity: .1;
-    mix-blend-mode: multiply;
-  }
-
   /* ---------- doodles, distributed down the whole page ---------- */
   .doodle { position: absolute; pointer-events: none; z-index: 0; }
   .float-a { animation: floaty 7s ease-in-out infinite alternate; }
@@ -56,50 +16,6 @@
   }
   .twinkle { animation: twinkle 3.5s ease-in-out infinite; }
   @keyframes twinkle { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
-
-  /* ---------- sticky pill nav ---------- */
-  .nav-pill {
-    background: rgba(255, 249, 239, .75);
-    backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(31, 75, 68, .25);
-    border-radius: 999px;
-    box-shadow: 0 10px 30px -12px rgba(31, 75, 68, .25);
-  }
-  .nav-link { font-weight: 600; font-size: .92rem; opacity: .85; transition: opacity .15s ease, color .15s ease; }
-  .nav-link:hover { opacity: 1; color: var(--coral); }
-
-  .btn-sunrise {
-    display: inline-block;
-    font-weight: 700;
-    padding: .85rem 1.7rem;
-    border-radius: 999px;
-    color: #fff8ef;
-    background: linear-gradient(120deg, var(--orange), var(--coral));
-    box-shadow: 0 12px 26px -10px rgba(253, 122, 86, .7);
-    transition: transform .18s ease, box-shadow .18s ease;
-  }
-  .btn-sunrise:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 32px -10px rgba(253, 122, 86, .75); }
-  .btn-shell {
-    display: inline-block;
-    font-weight: 700;
-    padding: .85rem 1.7rem;
-    border-radius: 999px;
-    color: var(--ink);
-    background: rgba(255, 249, 239, .8);
-    border: 1.5px solid rgba(31, 75, 68, .35);
-    transition: transform .18s ease, background .18s ease;
-  }
-  .btn-shell:hover { transform: translateY(-3px); background: var(--cream); }
-
-  .eyebrow-chip {
-    display: inline-flex; align-items: center; gap: .5rem;
-    background: rgba(255, 249, 239, .85);
-    border: 1.5px solid rgba(31, 75, 68, .25);
-    border-radius: 999px;
-    padding: .45rem 1.1rem;
-    font-weight: 600;
-    font-size: .82rem;
-  }
 
   .squiggle-underline { position: relative; white-space: nowrap; }
   .squiggle-underline svg { position: absolute; left: 0; bottom: -10px; width: 100%; }
@@ -400,9 +316,6 @@
     60%  { opacity: 1; transform: rotate(-9deg) scale(.92); }
     to   { opacity: 1; transform: rotate(-9deg) scale(1); }
   }
-
-  .reveal { opacity: 0; transform: translateY(24px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
-  @keyframes rise { to { opacity: 1; transform: none; } }
 </style>
 {% endblock %}
 
@@ -411,7 +324,7 @@
 
 <!-- doodles, distributed down the whole page -->
 <div class="doodle twinkle" style="top: 130px; left: 4%">
-  <svg width="26" height="26" viewBox="0 0 30 30" fill="#f9d157"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  <svg width="26" height="26" viewBox="0 0 30 30" fill="#369383"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
 </div>
 <div class="doodle float-b" style="top: 240px; right: 5%">
   <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="#369383" stroke-width="3.5" stroke-linecap="round">
@@ -437,7 +350,7 @@
   <svg width="46" height="46" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#fca9a9"/><circle cx="32" cy="32" r="20" fill="#fff3d6"/><g stroke="#de4a66" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="50"/><line x1="14" y1="32" x2="50" y2="32"/><line x1="19" y1="19" x2="45" y2="45"/><line x1="45" y1="19" x2="19" y2="45"/></g></svg>
 </div>
 <div class="doodle twinkle" style="top: 2120px; left: 5%; animation-delay: -.8s">
-  <svg width="24" height="24" viewBox="0 0 30 30" fill="#f29a4a"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  <svg width="24" height="24" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
 </div>
 <div class="doodle float-b" style="top: 2440px; right: 4%; animation-delay: -4s">
   <svg width="62" height="62" viewBox="0 0 80 80" fill="none" stroke="#de4a66" stroke-width="3.5" stroke-linecap="round" style="transform: scaleX(-1)">
@@ -451,21 +364,7 @@
   </svg>
 </div>
 
-<!-- sticky pill nav -->
-<header class="sticky top-4 z-40 max-w-4xl mx-auto px-4 reveal" style="animation-delay:.05s">
-  <div class="nav-pill px-6 py-3 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 font-extrabold text-xl tracking-tight">
-      <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="#f9d157"/><circle cx="13" cy="13" r="6.5" fill="#fd7a56"/></svg>
-      Ipanema
-    </a>
-    <nav class="hidden md:flex items-center gap-7">
-      <a class="nav-link" href="#modules">Modules</a>
-      <a class="nav-link" href="#shore">Method</a>
-      <a class="nav-link" href="#">Progress</a>
-    </nav>
-    <a href="#modules" class="btn-sunrise !py-2 !px-5 text-sm">Dive in</a>
-  </div>
-</header>
+{% include "partials/navbar.html" %}
 
 <!-- hero -->
 <section class="relative z-10 max-w-5xl mx-auto px-6 pt-16 pb-20 text-center" x-data="postcardDemo()">
