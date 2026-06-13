@@ -4,6 +4,7 @@
 
 {% block head %}
 {% include "partials/theme.html" %}
+{% include "modules/partials/modules_styles.html" %}
 {% endblock %}
 
 {% block body %}
@@ -19,6 +20,30 @@
   <h1 class="display font-black leading-tight mt-8 reveal" style="font-size: clamp(2.2rem, 5.5vw, 3.6rem); animation-delay:.22s">
     Welcome back, <span class="serif-it" style="color:var(--coral); font-weight:400">{{ user.get_short_name }}</span>
   </h1>
+  {% if has_progress %}
+  <p class="text-lg mt-6 max-w-md mx-auto leading-relaxed opacity-90 reveal" style="animation-delay:.35s">
+    {{ lesson_count }} exercise{{ lesson_count|pluralize }} done ·
+    {{ module_count }} stamp{{ module_count|pluralize }} issued.
+  </p>
+
+  <div class="mt-12 space-y-4 text-left reveal" style="animation-delay:.45s">
+    {% for row in summary %}
+    <a href="{% url 'modules:module_detail' row.module.slug %}"
+       class="lesson-card {% if row.complete %}is-done{% endif %}" style="text-decoration:none">
+      <span class="lesson-num mono">{{ row.module.number|stringformat:"02d" }}</span>
+      <span class="flex-1">
+        <span class="block font-semibold" style="color:var(--ink-deep)">{{ row.module.title }}</span>
+        <span class="mono text-[.7rem] uppercase tracking-[.14em] opacity-70">{{ row.done }} / {{ row.total }} lessons</span>
+      </span>
+      {% if row.complete %}
+        <span class="tick-stamp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      {% else %}
+        <span class="mono text-lg" style="color:var(--teal)">→</span>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
   <p class="text-lg mt-6 max-w-md mx-auto leading-relaxed opacity-90 reveal" style="animation-delay:.35s">
     Nothing here yet — your footprints in the sand will show up
     as you work through the modules.
@@ -26,5 +51,6 @@
   <div class="mt-9 reveal" style="animation-delay:.48s">
     <a href="{% url 'core:index' %}#modules" class="btn-sunrise">Dive into chapter one</a>
   </div>
+  {% endif %}
 </section>
 {% endblock %}

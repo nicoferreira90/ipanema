@@ -383,7 +383,7 @@
     checked right in your text editor. Warm water, deep ideas.
   </p>
   <div class="flex flex-wrap justify-center gap-4 mt-9 reveal" style="animation-delay:.55s">
-    <a href="#modules" class="btn-sunrise">Start with chapter one</a>
+    <a href="{% if first_module %}{% url 'modules:module_detail' first_module.slug %}{% else %}#modules{% endif %}" class="btn-sunrise">Start with chapter one</a>
     <button class="btn-shell" @click="toggle()" x-text="flipped ? '↩ Back to the beach' : 'How it works'">How it works</button>
   </div>
 
@@ -481,14 +481,14 @@
           {% for lesson in m.lessons %}
           <li class="lesson-row py-2 flex items-baseline gap-3 text-sm">
             <span class="mono text-[.74rem]" style="color:var(--coral)">{{ m.number }}.{{ forloop.counter }}</span>
-            <span>{{ lesson }}</span>
+            <span>{{ lesson.title }}</span>
           </li>
           {% endfor %}
         </ul>
 
         <div class="flex items-center justify-between mt-6 pt-4" style="border-top: 2px solid var(--ink)">
           <span class="mono text-[.66rem] uppercase tracking-[.14em] opacity-70">{{ m.lessons|length }} lessons · {{ m.exercise_count }} exercises</span>
-          <a href="#" class="btn-sunrise !py-2 !px-5 text-sm">Wade in →</a>
+          <a href="{% url 'modules:module_detail' m.slug %}" class="btn-sunrise !py-2 !px-5 text-sm">Wade in →</a>
         </div>
       </div>
     </div>

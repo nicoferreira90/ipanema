@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ lesson.title }} — {{ module.title }} — Ipanema{% endblock %}
+
+{% block head %}
+{% include "partials/theme.html" %}
+{% include "modules/partials/modules_styles.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="page-grain"></div>
+{% include "partials/navbar.html" %}
+
+<main class="relative z-10 max-w-3xl mx-auto px-6 pt-12 pb-28">
+
+  <a href="{% url 'modules:module_detail' module.slug %}"
+     class="chapter-eyebrow reveal" style="text-decoration:none">
+    ← {{ module.number|stringformat:"02d" }} · {{ module.title }}
+  </a>
+
+  <p class="mono text-[.7rem] tracking-[.2em] uppercase mt-6 reveal" style="color:var(--coral); animation-delay:.05s">
+    Lesson {{ position }} of {{ total }}
+  </p>
+  <h1 class="display font-black leading-tight mt-2 reveal"
+      style="font-size: clamp(2rem, 5vw, 3rem); color:var(--ink-deep); animation-delay:.12s">
+    {{ lesson.title }}
+  </h1>
+
+  <article class="prose mt-8 reveal" style="animation-delay:.2s">
+    {{ lesson.body_html|safe }}
+  </article>
+
+  <section class="exercise-card mt-12 reveal" style="animation-delay:.28s">
+    <p class="exercise-tag">✎ exercise · terminal</p>
+    <p class="mt-3 mb-5 leading-relaxed" style="white-space:pre-line">{{ lesson.exercise }}</p>
+
+    {% url 'modules:complete_lesson' module.slug lesson.slug as lesson_complete_url %}
+    {% include "modules/partials/code_runner.html" with runner_id="lesson-check" check=lesson.check complete_url=lesson_complete_url is_project=False done=done done_text="Exercise collected — nicely done." placeholder="# write your solution here" %}
+
+    {% if not user.is_authenticated %}
+    <p class="mt-4 text-sm opacity-70">
+      <a class="nav-link" style="color:var(--coral)" href="{% url 'account_login' %}?next={{ request.path }}">Log in</a>
+      to have your progress recorded.
+    </p>
+    {% endif %}
+  </section>
+
+  <nav class="flex items-center justify-between mt-14 gap-4 reveal" style="animation-delay:.34s">
+    {% if prev %}
+      <a href="{% url 'modules:lesson_detail' module.slug prev.slug %}" class="btn-shell !py-2 !px-5 text-sm">← {{ prev.title }}</a>
+    {% else %}<span></span>{% endif %}
+    {% if next %}
+      <a href="{% url 'modules:lesson_detail' module.slug next.slug %}" class="btn-sunrise !py-2 !px-5 text-sm">{{ next.title }} →</a>
+    {% else %}
+      <a href="{% url 'modules:module_detail' module.slug %}#mini-project" class="btn-sunrise !py-2 !px-5 text-sm">On to the mini-project →</a>
+    {% endif %}
+  </nav>
+</main>
+
+<script src="{% static 'js/runner.js' %}" defer></script>
+{% endblock %}

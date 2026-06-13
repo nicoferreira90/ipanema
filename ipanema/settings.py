@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'ipanema.apps.core',
     'ipanema.apps.users',
+    'ipanema.apps.modules',
 ]
 
 MIDDLEWARE = [

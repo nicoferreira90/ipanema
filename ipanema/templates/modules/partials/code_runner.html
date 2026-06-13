@@ -1,0 +1,55 @@
+{% comment %}
+Reusable in-browser code runner.
+Params (via {% include with %}):
+  runner_id    unique string (used as the json_script id)
+  check        the hidden check code (Python) appended after the user's code
+  complete_url URL the form POSTs to once the check passes
+  is_project   bool — include a hidden "code" field carrying the submission
+  done         bool — already completed (render the banner straight away)
+  done_text    banner label for the already-done state
+  placeholder  editor placeholder text
+{% endcomment %}
+<div class="runner" data-runner>
+  {{ check|json_script:runner_id }}
+
+  <div class="editor-shell">
+    <div class="editor-shell-head">
+      <span class="term-dot" style="background:#ff6b5e"></span>
+      <span class="term-dot" style="background:#f9d157"></span>
+      <span class="term-dot" style="background:#6ee7a8"></span>
+      <span style="margin-left:.4rem">main.py</span>
+    </div>
+    <textarea class="editor" data-editor spellcheck="false"
+              placeholder="{{ placeholder|default:'# write your solution here' }}"></textarea>
+  </div>
+
+  <div class="runner-bar">
+    <button type="button" class="btn-sunrise !py-2 !px-5 text-sm" data-run>Run ▸</button>
+    <span class="runner-status" data-status>ready</span>
+  </div>
+
+  <div class="term">
+    <div class="term-head">
+      <span class="term-dot" style="background:rgba(255,249,239,.3)"></span>
+      python · pyodide
+    </div>
+    <div class="term-body" data-output><span class="term-line dim">Press Run to execute your code in the browser.</span></div>
+    <div class="passed-stamp" data-stamp>passed</div>
+  </div>
+
+  <div class="mt-4" data-complete-slot>
+    {% if done %}
+      <div class="done-banner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        {{ done_text }}
+      </div>
+    {% else %}
+      <form method="post" action="{{ complete_url }}"
+            hx-post="{{ complete_url }}" hx-trigger="passed"
+            hx-swap="outerHTML" hx-target="this" data-complete-form>
+        {% csrf_token %}
+        {% if is_project %}<input type="hidden" name="code" data-code-field>{% endif %}
+      </form>
+    {% endif %}
+  </div>
+</div>

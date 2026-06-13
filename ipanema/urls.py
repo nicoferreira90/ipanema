@@ -20,5 +20,6 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('modules/', include('ipanema.apps.modules.urls')),
     path('', include('ipanema.apps.core.urls')),
 ]
