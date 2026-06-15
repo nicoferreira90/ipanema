@@ -8,43 +8,36 @@
 <style>
   /* ===== landing — postcard-from-the-edge layout ===== */
 
+  /* floating doodles */
+  .doodle { position: absolute; pointer-events: none; z-index: 0; }
+  .float-a { animation: floaty 7s ease-in-out infinite alternate; }
+  .float-b { animation: floaty 9s ease-in-out infinite alternate-reverse; }
+  .float-c { animation: floaty 11s ease-in-out infinite alternate; }
+  @keyframes floaty {
+    from { transform: translateY(-10px) rotate(-3deg); }
+    to   { transform: translateY(12px) rotate(4deg); }
+  }
+  .twinkle { animation: twinkle 3.5s ease-in-out infinite; }
+  @keyframes twinkle { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+
+  /* hero */
   .p1-hero { position: relative; z-index: 10; }
-  .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  .hero-grid { display: grid; gap: 2.75rem; align-items: center; }
   .hero-copy { position: relative; z-index: 3; }
-  .hero-art  { position: relative; z-index: 2; }
+  .hero-art  { position: relative; z-index: 2; display: flex; justify-content: center; }
+  .hero-art .postcard { width: 100%; max-width: 400px; }
 
   @media (min-width: 1024px) {
-    .hero-grid { grid-template-columns: 1.04fr 0.96fr; gap: 0; }
-    .hero-art  { margin-left: -4.5rem; margin-right: -9vw; }
-    .hero-art .postcard { transform: rotate(2.4deg) scale(1.04); }
-    .hero-art .postcard:hover { transform: rotate(1.2deg) scale(1.05) translateY(-4px); }
+    .hero-grid { grid-template-columns: 1.06fr 0.94fr; gap: 3.25rem; min-height: 66vh; }
+    .hero-art { justify-content: flex-end; }
+    .hero-art .postcard { max-width: 468px; transform: rotate(2.2deg); }
+    .hero-art .postcard:hover { transform: rotate(1deg) translateY(-4px); }
   }
 
-  /* horizontal stamp album — full-bleed scroll strip */
-  .album-wrap { width: 100vw; margin-left: calc(50% - 50vw); position: relative; z-index: 10; }
-  .album {
-    display: flex; gap: 1.85rem;
-    overflow-x: auto; scroll-snap-type: x mandatory;
-    padding: 1.75rem max(6vw, calc(50vw - 38rem)) 2.5rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-  .album::-webkit-scrollbar { height: 10px; }
-  .album::-webkit-scrollbar-track { background: transparent; }
-  .album::-webkit-scrollbar-thumb { background: rgba(31, 75, 68, .22); border-radius: 999px; }
-  .album-item { flex: 0 0 min(84vw, 358px); scroll-snap-align: center; }
-  .album-item:nth-child(odd)  .stamp { transform: rotate(-1.4deg); }
-  .album-item:nth-child(even) .stamp { transform: rotate(1.3deg); }
-  .album-item .stamp:hover { transform: rotate(0) translateY(-6px) !important; }
-
-  .drag-hint {
-    display: inline-flex; align-items: center; gap: .5rem;
-    font-family: "Fragment Mono", monospace;
-    font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--teal); opacity: .8;
-  }
-  .drag-hint svg { animation: nudge 1.8s ease-in-out infinite; }
-  @keyframes nudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+  /* collection grid */
+  .stamp-cell:nth-child(odd)  .stamp { transform: rotate(-1.2deg); }
+  .stamp-cell:nth-child(even) .stamp { transform: rotate(1.4deg); }
+  .stamp-cell .stamp:hover { transform: rotate(0) translateY(-6px) !important; }
 </style>
 {% endblock %}
 
@@ -53,7 +46,20 @@
 {% include "partials/navbar.html" %}
 
 <!-- ===== hero: asymmetric split ===== -->
-<section class="p1-hero max-w-6xl mx-auto px-6 pt-12 lg:pt-20 pb-16" x-data="postcardDemo()">
+<section class="p1-hero max-w-7xl mx-auto px-6 pt-12 lg:pt-16 pb-16" x-data="postcardDemo()">
+  <!-- doodles -->
+  <div class="doodle twinkle" style="top: 60px; left: 0">
+    <svg width="26" height="26" viewBox="0 0 30 30" fill="#369383"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  </div>
+  <div class="doodle float-c" style="bottom: 36px; left: 1.5%">
+    <svg width="70" height="36" viewBox="0 0 70 36" fill="none" stroke="#80d8dd" stroke-width="4" stroke-linecap="round">
+      <path d="M3 18 Q 12 4 21 18 T 39 18 T 57 18 T 67 18"/>
+    </svg>
+  </div>
+  <div class="doodle twinkle hidden lg:block" style="top: 30px; right: 3%; animation-delay: -1.4s">
+    <svg width="20" height="20" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  </div>
+
   <div class="hero-grid">
     <div class="hero-copy">
       <span class="eyebrow-chip reveal" style="animation-delay:.1s">
@@ -82,26 +88,31 @@
   </div>
 </section>
 
-<!-- ===== collection: horizontal album ===== -->
-<section id="modules" class="pt-6 pb-24">
-  <div class="max-w-6xl mx-auto px-6 flex flex-wrap items-end justify-between gap-4 mb-2">
-    <div>
+<!-- ===== collection: vertical grid ===== -->
+<section id="modules" class="relative pt-8 pb-24">
+  <!-- doodles -->
+  <div class="doodle twinkle" style="top: 24px; right: 4%; animation-delay: -2.1s">
+    <svg width="28" height="28" viewBox="0 0 30 30" fill="#27ba76"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  </div>
+  <div class="doodle float-a" style="bottom: 80px; left: 2.5%">
+    <svg width="54" height="54" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#fd7a56"/><circle cx="32" cy="32" r="20" fill="#fff3d6"/><g stroke="#fd7a56" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="50"/><line x1="14" y1="32" x2="50" y2="32"/><line x1="19" y1="19" x2="45" y2="45"/><line x1="45" y1="19" x2="19" y2="45"/></g></svg>
+  </div>
+  <div class="doodle twinkle hidden md:block" style="bottom: 30%; right: 5%; animation-delay: -.7s">
+    <svg width="22" height="22" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-12">
       <h2 class="text-4xl md:text-5xl font-extrabold reveal">The Collection</h2>
       <p class="serif-it text-2xl mt-2 reveal" style="color:var(--teal); animation-delay:.1s">two stamps issued, twenty-eight to come</p>
     </div>
-    <span class="drag-hint reveal" style="animation-delay:.2s">
-      drag to flip through
-      <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h18M14 1l5 5-5 5"/></svg>
-    </span>
-  </div>
 
-  <div class="album-wrap">
-    <div class="album">
+    <div class="grid sm:grid-cols-2 gap-8 lg:gap-10">
       {% for m in available_modules %}
-      <div class="album-item">{% include "partials/stamp_card.html" %}</div>
+      <div class="stamp-cell">{% include "partials/stamp_card.html" %}</div>
       {% endfor %}
       {% for m in coming_modules %}
-      <div class="album-item">{% include "partials/stamp_coming.html" %}</div>
+      <div class="stamp-cell">{% include "partials/stamp_coming.html" %}</div>
       {% endfor %}
     </div>
   </div>
