@@ -1,0 +1,88 @@
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('postcardDemo', () => ({
+    flipped: false,
+    lines: [],
+    typing: false,
+    fixed: false,
+    stamped: false,
+    done: false,
+    _run: 0,
+    reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+
+    init() {
+      if (new URLSearchParams(location.search).has('demo')) {
+        this.$nextTick(() => this.toggle());
+      }
+    },
+
+    toggle() {
+      if (this.flipped) {
+        this.flipped = false;
+        this._run++;          // abort any running script
+        return;
+      }
+      this.flipped = true;
+      this.start();
+    },
+
+    async start() {
+      const run = ++this._run;
+      const alive = () => run === this._run;
+      this.lines = [];
+      this.fixed = false;
+      this.stamped = false;
+      this.done = false;
+      this.typing = false;
+
+      const sleep = (ms) => new Promise((r) => setTimeout(r, this.reduced ? 0 : ms));
+      const scroll = () => this.$nextTick(() => {
+        const el = this.$refs.term;
+        if (el) el.scrollTop = el.scrollHeight;
+      });
+      const out = (t, c = '') => { this.lines.push({ t, c }); scroll(); };
+      const type = async (cmd) => {
+        this.lines.push({ t: '$ ', c: 'cmd' });
+        this.typing = true;
+        for (const ch of cmd) {
+          if (!alive()) return;
+          this.lines[this.lines.length - 1].t += ch;
+          scroll();
+          await sleep(26);
+        }
+        this.typing = false;
+        await sleep(380);
+      };
+
+      await sleep(850); if (!alive()) return;
+      await type('ipanema check 1.1'); if (!alive()) return;
+      out('collecting exercise_01.py — 1 check', 'dim');
+      await sleep(700); if (!alive()) return;
+      out('✗ len(deck) raises TypeError:', 'fail');
+      out("  object of type 'FrenchDeck' has no len()", 'fail');
+      await sleep(500); if (!alive()) return;
+      out('  hint: len(x) calls x.__len__() —', 'hint');
+      out('        the dunder name is the contract', 'hint');
+      await sleep(350); if (!alive()) return;
+      out('1 failed · 0.31s', 'failmeta');
+      await sleep(1200); if (!alive()) return;
+
+      this.fixed = true;
+      out('', '');
+      out('… you fix exercise_01.py in your editor', 'dim');
+      await sleep(1400); if (!alive()) return;
+
+      await type('ipanema check 1.1'); if (!alive()) return;
+      out('collecting exercise_01.py — 1 check', 'dim');
+      await sleep(700); if (!alive()) return;
+      out('✓ len(deck) == 52', 'pass');
+      await sleep(400); if (!alive()) return;
+      out('1 passed · 0.28s — Pythonic! ☀', 'passmeta');
+      await sleep(450); if (!alive()) return;
+      this.stamped = true;
+      this.done = true;
+      scroll();
+    },
+  }));
+});
+</script>

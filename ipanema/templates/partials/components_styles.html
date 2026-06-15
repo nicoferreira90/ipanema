@@ -1,0 +1,300 @@
+<style>
+  /* ===== shared component styles (postcard, stamps, waves, tickets, terminal) =====
+     Extracted from the original index.html so any page can use the components. */
+
+  .squiggle-underline { position: relative; white-space: nowrap; }
+  .squiggle-underline svg { position: absolute; left: 0; bottom: -10px; width: 100%; }
+
+  /* ---------- postcard ---------- */
+  .postcard {
+    background: var(--cream);
+    padding: 14px 14px 56px;
+    border-radius: 8px;
+    box-shadow: 0 30px 60px -24px rgba(31, 75, 68, .5), 0 6px 18px -8px rgba(31, 75, 68, .3);
+    transform: rotate(-1.6deg);
+    transition: transform .3s ease;
+  }
+  .postcard:hover { transform: rotate(-.4deg) translateY(-4px); }
+  .postcard-scene { position: relative; overflow: hidden; border-radius: 4px; }
+  .postcard-caption { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; }
+  .postcard-stamp {
+    position: absolute;
+    top: 26px; right: 26px;
+    z-index: 20;
+    padding: 6px;
+    background-image: radial-gradient(circle, transparent 0 3.5px, var(--paper) 4px);
+    background-size: 13px 13px;
+    background-position: center;
+    transform: rotate(3deg);
+  }
+  .postcard-stamp-inner {
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    padding: .45rem .6rem;
+    text-align: center;
+  }
+  .postmark {
+    position: absolute;
+    top: 34px; right: 96px;
+    z-index: 21;
+    width: 84px; height: 84px;
+    border: 2px solid rgba(255, 248, 236, .75);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transform: rotate(-12deg);
+    color: rgba(255, 248, 236, .85);
+    font-size: .5rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .sunset-sky {
+    background: linear-gradient(
+      to bottom,
+      var(--yellow) 0%,
+      var(--orange) 34%,
+      var(--coral) 64%,
+      #ef5f43 88%,
+      var(--raspberry) 100%
+    );
+  }
+  .sun-rays {
+    position: absolute;
+    width: 130vmin; height: 130vmin;
+    left: 50%; top: 40%;
+    transform: translate(-50%, -50%);
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 248, 220, .28) 0deg 5deg,
+      transparent 5deg 14deg
+    );
+    border-radius: 50%;
+    animation: rayspin 80s linear infinite;
+  }
+  @keyframes rayspin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+  .sun-disc {
+    position: absolute;
+    left: 50%; top: 40%;
+    transform: translate(-50%, -50%);
+    width: 170px; height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #fff3c4, var(--yellow) 65%);
+    box-shadow: 0 0 70px 20px rgba(249, 209, 87, .55);
+  }
+  .sun-disc::after {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 20px,
+      rgba(242, 122, 60, .55) 20px 25px
+    );
+    -webkit-mask: linear-gradient(to bottom, transparent 45%, black 48%);
+            mask: linear-gradient(to bottom, transparent 45%, black 48%);
+  }
+  .grain-scene::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: .14;
+    mix-blend-mode: multiply;
+  }
+  .wave-band { position: absolute; left: -2%; width: 104%; }
+  .drift-slow { animation: drift 9s ease-in-out infinite alternate; }
+  .drift-fast { animation: drift 6s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { from { transform: translateX(-12px); } to { transform: translateX(12px); } }
+  .palm { position: absolute; bottom: -4px; }
+  .palm svg { display: block; }
+  .palm-sway { transform-origin: bottom center; animation: sway 7s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.8deg); } }
+
+  /* ---------- postage stamps ---------- */
+  .stamp {
+    padding: 11px;
+    background-image: radial-gradient(circle, transparent 0 5px, var(--paper) 5.5px);
+    background-size: 19px 19px;
+    background-position: center;
+    filter: drop-shadow(0 22px 28px rgba(31, 75, 68, .3));
+    transition: transform .2s ease;
+  }
+  .stamp:hover { transform: rotate(0deg) translateY(-6px) !important; }
+  .stamp-inner {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    height: 100%;
+    position: relative;
+  }
+  .stamp-value {
+    font-family: "Fraunces", serif;
+    font-weight: 900;
+    line-height: 1;
+    border: 2px solid var(--ink);
+    padding: .35rem .55rem;
+  }
+  .stamp-cancel {
+    position: absolute;
+    top: 14px; right: -22px;
+    width: 110px; height: 110px;
+    border: 2.5px solid rgba(242, 154, 74, .6);
+    border-radius: 50%;
+    pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    transform: rotate(14deg);
+    color: rgba(242, 122, 60, .75);
+    font-size: .55rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-align: center;
+  }
+  .rubber-stamp {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    border: 3px solid var(--coral);
+    color: var(--coral);
+    font-weight: 900;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    padding: .4rem 1rem;
+    font-size: .85rem;
+    opacity: .85;
+    mix-blend-mode: multiply;
+  }
+  .lesson-row { border-top: 1.5px dashed rgba(31, 75, 68, .35); }
+
+  /* ---------- ticket method cards ---------- */
+  .ticket {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    position: relative;
+    box-shadow: 6px 6px 0 rgba(31, 75, 68, .18);
+  }
+  .ticket::before, .ticket::after {
+    content: "";
+    position: absolute;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--sand-low);
+    border: 2px solid var(--ink);
+    top: 50%;
+  }
+  .ticket::before { left: -13px; transform: translateY(-50%); border-left-color: transparent; }
+  .ticket::after { right: -13px; transform: translateY(-50%); border-right-color: transparent; }
+
+  .palette-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+
+  /* ---------- postcard flip + demo ---------- */
+  .flip-wrap { display: grid; perspective: 1600px; }
+  .face {
+    grid-area: 1 / 1;
+    min-width: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition: transform .75s cubic-bezier(.35, .15, .2, 1), visibility 0s .32s;
+  }
+  .face-front { transform: rotateY(0deg); visibility: visible; }
+  .face-back  { transform: rotateY(-180deg); visibility: hidden; }
+  .flip-wrap.is-flipped .face-front { transform: rotateY(180deg); visibility: hidden; }
+  .flip-wrap.is-flipped .face-back  { transform: rotateY(0deg); visibility: visible; }
+
+  .postcard-back {
+    background: var(--cream);
+    border: 1.5px dashed rgba(31, 75, 68, .3);
+    border-radius: 4px;
+    text-align: left;
+    height: 100%;
+  }
+  .lesson-pane { padding: 1.3rem 1.4rem 1.4rem; }
+
+  .term {
+    background: var(--ink-deep);
+    border-radius: 14px;
+    margin: .9rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 249, 239, .08);
+  }
+  .term-head {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .65rem 1rem;
+    border-bottom: 1px solid rgba(255, 249, 239, .12);
+    color: rgba(255, 249, 239, .55);
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .term-body {
+    padding: .85rem 1rem 1.05rem;
+    font-size: .76rem;
+    line-height: 1.62;
+    color: #f3ecdc;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 280px;
+    max-height: 340px;
+  }
+  .term-line { white-space: pre-wrap; word-break: break-word; min-height: 1.2em; }
+  .term-line.cmd { color: #fff8ec; font-weight: 600; }
+  .term-line.dim { color: rgba(243, 236, 220, .5); }
+  .term-line.fail { color: #ff9d84; }
+  .term-line.hint { color: var(--yellow); }
+  .term-line.failmeta { color: #ff9d84; border-top: 1px dashed rgba(255, 157, 132, .4); margin-top: .35rem; padding-top: .35rem; }
+  .term-line.pass { color: #6ee7a8; }
+  .term-line.passmeta { color: #6ee7a8; border-top: 1px dashed rgba(110, 231, 168, .4); margin-top: .35rem; padding-top: .35rem; }
+  .cursor {
+    display: inline-block;
+    width: .55em; height: 1.05em;
+    vertical-align: -.15em;
+    background: #f3ecdc;
+    margin-left: 2px;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .code-pane {
+    background: #fdf6e7;
+    border: 1.5px solid rgba(31, 75, 68, .2);
+    border-radius: 10px;
+    padding: .75rem .9rem;
+    font-size: .72rem;
+    line-height: 1.65;
+    color: var(--ink);
+    overflow-x: auto;
+  }
+  .code-pane > div { white-space: pre; }
+  .c-kw { color: var(--raspberry); font-weight: 600; }
+  .c-cm { color: rgba(31, 75, 68, .45); font-style: italic; }
+  .fixline { border-radius: 4px; background: rgba(222, 74, 102, .16); transition: background .4s ease; }
+  .fixline.isfixed { background: rgba(39, 186, 118, .22); animation: fixflash .9s ease; }
+  @keyframes fixflash {
+    0% { background: rgba(249, 209, 87, .6); }
+    100% { background: rgba(39, 186, 118, .22); }
+  }
+
+  .passed-stamp {
+    position: absolute;
+    right: 16px; bottom: 16px;
+    border: 3px solid #6ee7a8;
+    color: #6ee7a8;
+    border-radius: 6px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    padding: .45rem 1rem;
+    font-size: .76rem;
+    transform: rotate(-9deg) scale(2.2);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .passed-stamp.show { animation: slam .5s cubic-bezier(.2, 1.4, .4, 1) forwards; }
+  @keyframes slam {
+    from { opacity: 0; transform: rotate(-9deg) scale(2.2); }
+    60%  { opacity: 1; transform: rotate(-9deg) scale(.92); }
+    to   { opacity: 1; transform: rotate(-9deg) scale(1); }
+  }
+</style>

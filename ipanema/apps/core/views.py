@@ -5,6 +5,19 @@ from ipanema.apps.modules import content
 from ipanema.apps.modules.models import LessonCompletion, ModuleCompletion
 
 
+def _landing_context(request):
+    """Shared context for the landing prototypes. `home_url` lets the navbar's
+    in-page anchors target whichever prototype is being viewed."""
+    return {
+        "modules": content.MODULES,
+        "available_modules": content.AVAILABLE_MODULES,
+        "coming_modules": content.COMING_MODULES,
+        "first_module": content.AVAILABLE_MODULES[0] if content.AVAILABLE_MODULES else None,
+        "total_planned": content.TOTAL_PLANNED,
+        "home_url": request.path,
+    }
+
+
 @login_required
 def progress(request):
     done_lessons = set(
@@ -41,11 +54,5 @@ def progress(request):
 
 
 def index(request):
-    context = {
-        "modules": content.MODULES,
-        "available_modules": content.AVAILABLE_MODULES,
-        "coming_modules": content.COMING_MODULES,
-        "first_module": content.AVAILABLE_MODULES[0] if content.AVAILABLE_MODULES else None,
-        "total_planned": content.TOTAL_PLANNED,
-    }
-    return render(request, "index.html", context)
+    """The landing page."""
+    return render(request, "index.html", _landing_context(request))

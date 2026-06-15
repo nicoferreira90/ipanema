@@ -4,642 +4,111 @@
 
 {% block head %}
 {% include "partials/theme.html" %}
+{% include "partials/components_styles.html" %}
 <style>
-  /* ---------- doodles, distributed down the whole page ---------- */
-  .doodle { position: absolute; pointer-events: none; z-index: 0; }
-  .float-a { animation: floaty 7s ease-in-out infinite alternate; }
-  .float-b { animation: floaty 9s ease-in-out infinite alternate-reverse; }
-  .float-c { animation: floaty 11s ease-in-out infinite alternate; }
-  @keyframes floaty {
-    from { transform: translateY(-10px) rotate(-3deg); }
-    to   { transform: translateY(12px) rotate(4deg); }
-  }
-  .twinkle { animation: twinkle 3.5s ease-in-out infinite; }
-  @keyframes twinkle { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+  /* ===== landing — postcard-from-the-edge layout ===== */
 
-  .squiggle-underline { position: relative; white-space: nowrap; }
-  .squiggle-underline svg { position: absolute; left: 0; bottom: -10px; width: 100%; }
+  .p1-hero { position: relative; z-index: 10; }
+  .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  .hero-copy { position: relative; z-index: 3; }
+  .hero-art  { position: relative; z-index: 2; }
 
-  /* ---------- postcard ---------- */
-  .postcard {
-    background: var(--cream);
-    padding: 14px 14px 56px;
-    border-radius: 8px;
-    box-shadow: 0 30px 60px -24px rgba(31, 75, 68, .5), 0 6px 18px -8px rgba(31, 75, 68, .3);
-    transform: rotate(-1.6deg);
-    transition: transform .3s ease;
-  }
-  .postcard:hover { transform: rotate(-.4deg) translateY(-4px); }
-  .postcard-scene { position: relative; overflow: hidden; border-radius: 4px; }
-  .postcard-caption { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; }
-  .postcard-stamp {
-    position: absolute;
-    top: 26px; right: 26px;
-    z-index: 20;
-    padding: 6px;
-    background-image: radial-gradient(circle, transparent 0 3.5px, var(--paper) 4px);
-    background-size: 13px 13px;
-    background-position: center;
-    transform: rotate(3deg);
-  }
-  .postcard-stamp-inner {
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    padding: .45rem .6rem;
-    text-align: center;
-  }
-  .postmark {
-    position: absolute;
-    top: 34px; right: 96px;
-    z-index: 21;
-    width: 84px; height: 84px;
-    border: 2px solid rgba(255, 248, 236, .75);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transform: rotate(-12deg);
-    color: rgba(255, 248, 236, .85);
-    font-size: .5rem;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    font-weight: 700;
-    text-align: center;
-    pointer-events: none;
+  @media (min-width: 1024px) {
+    .hero-grid { grid-template-columns: 1.04fr 0.96fr; gap: 0; }
+    .hero-art  { margin-left: -4.5rem; margin-right: -9vw; }
+    .hero-art .postcard { transform: rotate(2.4deg) scale(1.04); }
+    .hero-art .postcard:hover { transform: rotate(1.2deg) scale(1.05) translateY(-4px); }
   }
 
-  .sunset-sky {
-    background: linear-gradient(
-      to bottom,
-      var(--yellow) 0%,
-      var(--orange) 34%,
-      var(--coral) 64%,
-      #ef5f43 88%,
-      var(--raspberry) 100%
-    );
+  /* horizontal stamp album — full-bleed scroll strip */
+  .album-wrap { width: 100vw; margin-left: calc(50% - 50vw); position: relative; z-index: 10; }
+  .album {
+    display: flex; gap: 1.85rem;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 1.75rem max(6vw, calc(50vw - 38rem)) 2.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
-  .sun-rays {
-    position: absolute;
-    width: 130vmin; height: 130vmin;
-    left: 50%; top: 40%;
-    transform: translate(-50%, -50%);
-    background: repeating-conic-gradient(
-      from 0deg,
-      rgba(255, 248, 220, .28) 0deg 5deg,
-      transparent 5deg 14deg
-    );
-    border-radius: 50%;
-    animation: rayspin 80s linear infinite;
-  }
-  @keyframes rayspin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-  .sun-disc {
-    position: absolute;
-    left: 50%; top: 40%;
-    transform: translate(-50%, -50%);
-    width: 170px; height: 170px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 38% 32%, #fff3c4, var(--yellow) 65%);
-    box-shadow: 0 0 70px 20px rgba(249, 209, 87, .55);
-  }
-  .sun-disc::after {
-    content: "";
-    position: absolute; inset: 0;
-    border-radius: 50%;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0 20px,
-      rgba(242, 122, 60, .55) 20px 25px
-    );
-    -webkit-mask: linear-gradient(to bottom, transparent 45%, black 48%);
-            mask: linear-gradient(to bottom, transparent 45%, black 48%);
-  }
-  .grain-scene::after {
-    content: "";
-    position: absolute; inset: 0; pointer-events: none;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-    opacity: .14;
-    mix-blend-mode: multiply;
-  }
-  .wave-band { position: absolute; left: -2%; width: 104%; }
-  .drift-slow { animation: drift 9s ease-in-out infinite alternate; }
-  .drift-fast { animation: drift 6s ease-in-out infinite alternate-reverse; }
-  @keyframes drift { from { transform: translateX(-12px); } to { transform: translateX(12px); } }
-  .palm { position: absolute; bottom: -4px; }
-  .palm svg { display: block; }
-  .palm-sway { transform-origin: bottom center; animation: sway 7s ease-in-out infinite alternate; }
-  @keyframes sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.8deg); } }
+  .album::-webkit-scrollbar { height: 10px; }
+  .album::-webkit-scrollbar-track { background: transparent; }
+  .album::-webkit-scrollbar-thumb { background: rgba(31, 75, 68, .22); border-radius: 999px; }
+  .album-item { flex: 0 0 min(84vw, 358px); scroll-snap-align: center; }
+  .album-item:nth-child(odd)  .stamp { transform: rotate(-1.4deg); }
+  .album-item:nth-child(even) .stamp { transform: rotate(1.3deg); }
+  .album-item .stamp:hover { transform: rotate(0) translateY(-6px) !important; }
 
-  /* ---------- postage stamps ---------- */
-  .stamp {
-    padding: 11px;
-    background-image: radial-gradient(circle, transparent 0 5px, var(--paper) 5.5px);
-    background-size: 19px 19px;
-    background-position: center;
-    filter: drop-shadow(0 22px 28px rgba(31, 75, 68, .3));
-    transition: transform .2s ease;
+  .drag-hint {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-family: "Fragment Mono", monospace;
+    font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--teal); opacity: .8;
   }
-  .stamp:hover { transform: rotate(0deg) translateY(-6px) !important; }
-  .stamp-inner {
-    background: var(--paper);
-    border: 2px solid var(--ink);
-    height: 100%;
-    position: relative;
-  }
-  .stamp-value {
-    font-family: "Fraunces", serif;
-    font-weight: 900;
-    line-height: 1;
-    border: 2px solid var(--ink);
-    padding: .35rem .55rem;
-  }
-  .stamp-cancel {
-    position: absolute;
-    top: 14px; right: -22px;
-    width: 110px; height: 110px;
-    border: 2.5px solid rgba(242, 154, 74, .6);
-    border-radius: 50%;
-    pointer-events: none;
-    display: flex; align-items: center; justify-content: center;
-    transform: rotate(14deg);
-    color: rgba(242, 122, 60, .75);
-    font-size: .55rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    font-weight: 800;
-    text-align: center;
-  }
-  .rubber-stamp {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%) rotate(-12deg);
-    border: 3px solid var(--coral);
-    color: var(--coral);
-    font-weight: 900;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    padding: .4rem 1rem;
-    font-size: .85rem;
-    opacity: .85;
-    mix-blend-mode: multiply;
-  }
-  .lesson-row { border-top: 1.5px dashed rgba(31, 75, 68, .35); }
-
-  /* ---------- ticket method cards (from Blend A) ---------- */
-  .ticket {
-    background: var(--paper);
-    border: 2px solid var(--ink);
-    position: relative;
-    box-shadow: 6px 6px 0 rgba(31, 75, 68, .18);
-  }
-  .ticket::before, .ticket::after {
-    content: "";
-    position: absolute;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--sand-low);
-    border: 2px solid var(--ink);
-    top: 50%;
-  }
-  .ticket::before { left: -13px; transform: translateY(-50%); border-left-color: transparent; }
-  .ticket::after { right: -13px; transform: translateY(-50%); border-right-color: transparent; }
-
-  .palette-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
-
-  /* ---------- postcard flip + demo ---------- */
-  /* Each face rotates itself (no preserve-3d): the front scene's animated
-     children get their own compositing layers in Chrome and ignore an
-     ancestor's hidden backface, so the away-side face is also hard-hidden
-     with a visibility switch at the flip's halfway point. */
-  .flip-wrap { display: grid; perspective: 1600px; }
-  .face {
-    grid-area: 1 / 1;
-    min-width: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transition: transform .75s cubic-bezier(.35, .15, .2, 1), visibility 0s .32s;
-  }
-  .face-front { transform: rotateY(0deg); visibility: visible; }
-  .face-back  { transform: rotateY(-180deg); visibility: hidden; }
-  .flip-wrap.is-flipped .face-front { transform: rotateY(180deg); visibility: hidden; }
-  .flip-wrap.is-flipped .face-back  { transform: rotateY(0deg); visibility: visible; }
-
-  .postcard-back {
-    background: var(--cream);
-    border: 1.5px dashed rgba(31, 75, 68, .3);
-    border-radius: 4px;
-    text-align: left;
-    height: 100%;
-  }
-  .lesson-pane { padding: 1.3rem 1.4rem 1.4rem; }
-
-  .term {
-    background: var(--ink-deep);
-    border-radius: 14px;
-    margin: .9rem;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: inset 0 0 0 1.5px rgba(255, 249, 239, .08);
-  }
-  .term-head {
-    display: flex; align-items: center; gap: .4rem;
-    padding: .65rem 1rem;
-    border-bottom: 1px solid rgba(255, 249, 239, .12);
-    color: rgba(255, 249, 239, .55);
-  }
-  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .term-body {
-    padding: .85rem 1rem 1.05rem;
-    font-size: .76rem;
-    line-height: 1.62;
-    color: #f3ecdc;
-    overflow-y: auto;
-    flex: 1;
-    min-height: 280px;
-    max-height: 340px;
-  }
-  .term-line { white-space: pre-wrap; word-break: break-word; min-height: 1.2em; }
-  .term-line.cmd { color: #fff8ec; font-weight: 600; }
-  .term-line.dim { color: rgba(243, 236, 220, .5); }
-  .term-line.fail { color: #ff9d84; }
-  .term-line.hint { color: var(--yellow); }
-  .term-line.failmeta { color: #ff9d84; border-top: 1px dashed rgba(255, 157, 132, .4); margin-top: .35rem; padding-top: .35rem; }
-  .term-line.pass { color: #6ee7a8; }
-  .term-line.passmeta { color: #6ee7a8; border-top: 1px dashed rgba(110, 231, 168, .4); margin-top: .35rem; padding-top: .35rem; }
-  .cursor {
-    display: inline-block;
-    width: .55em; height: 1.05em;
-    vertical-align: -.15em;
-    background: #f3ecdc;
-    margin-left: 2px;
-    animation: blink 1.05s steps(1) infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  .code-pane {
-    background: #fdf6e7;
-    border: 1.5px solid rgba(31, 75, 68, .2);
-    border-radius: 10px;
-    padding: .75rem .9rem;
-    font-size: .72rem;
-    line-height: 1.65;
-    color: var(--ink);
-    overflow-x: auto;
-  }
-  .code-pane > div { white-space: pre; }
-  .c-kw { color: var(--raspberry); font-weight: 600; }
-  .c-cm { color: rgba(31, 75, 68, .45); font-style: italic; }
-  .fixline { border-radius: 4px; background: rgba(222, 74, 102, .16); transition: background .4s ease; }
-  .fixline.isfixed { background: rgba(39, 186, 118, .22); animation: fixflash .9s ease; }
-  @keyframes fixflash {
-    0% { background: rgba(249, 209, 87, .6); }
-    100% { background: rgba(39, 186, 118, .22); }
-  }
-
-  .passed-stamp {
-    position: absolute;
-    right: 16px; bottom: 16px;
-    border: 3px solid #6ee7a8;
-    color: #6ee7a8;
-    border-radius: 6px;
-    font-weight: 800;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    padding: .45rem 1rem;
-    font-size: .76rem;
-    transform: rotate(-9deg) scale(2.2);
-    opacity: 0;
-    pointer-events: none;
-  }
-  .passed-stamp.show { animation: slam .5s cubic-bezier(.2, 1.4, .4, 1) forwards; }
-  @keyframes slam {
-    from { opacity: 0; transform: rotate(-9deg) scale(2.2); }
-    60%  { opacity: 1; transform: rotate(-9deg) scale(.92); }
-    to   { opacity: 1; transform: rotate(-9deg) scale(1); }
-  }
+  .drag-hint svg { animation: nudge 1.8s ease-in-out infinite; }
+  @keyframes nudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="page-grain"></div>
-
-<!-- doodles, distributed down the whole page -->
-<div class="doodle twinkle" style="top: 130px; left: 4%">
-  <svg width="26" height="26" viewBox="0 0 30 30" fill="#369383"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-</div>
-<div class="doodle float-b" style="top: 240px; right: 5%">
-  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="#369383" stroke-width="3.5" stroke-linecap="round">
-    <path d="M40 70 C 38 50 36 36 30 24"/><path d="M30 24 C 20 18 10 18 4 24 C 14 10 26 12 32 20"/>
-    <path d="M30 22 C 28 12 32 4 40 0 C 38 10 36 16 32 22"/><path d="M32 22 C 40 14 52 12 62 18 C 50 20 40 24 34 26"/>
-  </svg>
-</div>
-<div class="doodle float-a" style="top: 560px; left: 3%">
-  <svg width="60" height="60" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#fd7a56"/><circle cx="32" cy="32" r="20" fill="#fff3d6"/><g stroke="#fd7a56" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="50"/><line x1="14" y1="32" x2="50" y2="32"/><line x1="19" y1="19" x2="45" y2="45"/><line x1="45" y1="19" x2="19" y2="45"/></g></svg>
-</div>
-<div class="doodle twinkle" style="top: 880px; right: 3.5%; animation-delay: -1.2s">
-  <svg width="22" height="22" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-</div>
-<div class="doodle float-c" style="top: 1180px; left: 4%">
-  <svg width="70" height="36" viewBox="0 0 70 36" fill="none" stroke="#80d8dd" stroke-width="4" stroke-linecap="round">
-    <path d="M3 18 Q 12 4 21 18 T 39 18 T 57 18 T 67 18"/>
-  </svg>
-</div>
-<div class="doodle twinkle" style="top: 1480px; right: 4%; animation-delay: -2.2s">
-  <svg width="28" height="28" viewBox="0 0 30 30" fill="#27ba76"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-</div>
-<div class="doodle float-a" style="top: 1800px; right: 2.5%; animation-delay: -3s">
-  <svg width="46" height="46" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#fca9a9"/><circle cx="32" cy="32" r="20" fill="#fff3d6"/><g stroke="#de4a66" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="50"/><line x1="14" y1="32" x2="50" y2="32"/><line x1="19" y1="19" x2="45" y2="45"/><line x1="45" y1="19" x2="19" y2="45"/></g></svg>
-</div>
-<div class="doodle twinkle" style="top: 2120px; left: 5%; animation-delay: -.8s">
-  <svg width="24" height="24" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-</div>
-<div class="doodle float-b" style="top: 2440px; right: 4%; animation-delay: -4s">
-  <svg width="62" height="62" viewBox="0 0 80 80" fill="none" stroke="#de4a66" stroke-width="3.5" stroke-linecap="round" style="transform: scaleX(-1)">
-    <path d="M40 70 C 38 50 36 36 30 24"/><path d="M30 24 C 20 18 10 18 4 24 C 14 10 26 12 32 20"/>
-    <path d="M30 22 C 28 12 32 4 40 0 C 38 10 36 16 32 22"/><path d="M32 22 C 40 14 52 12 62 18 C 50 20 40 24 34 26"/>
-  </svg>
-</div>
-<div class="doodle float-c" style="top: 2740px; left: 3.5%; animation-delay: -5s">
-  <svg width="66" height="34" viewBox="0 0 70 36" fill="none" stroke="#369383" stroke-width="4" stroke-linecap="round">
-    <path d="M3 18 Q 12 4 21 18 T 39 18 T 57 18 T 67 18"/>
-  </svg>
-</div>
-
 {% include "partials/navbar.html" %}
 
-<!-- hero -->
-<section class="relative z-10 max-w-5xl mx-auto px-6 pt-16 pb-20 text-center" x-data="postcardDemo()">
-  <span class="eyebrow-chip reveal" style="animation-delay:.15s">
-    <svg width="14" height="14" viewBox="0 0 30 30" fill="#fd7a56"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-    A Companion to Luciano Ramalho's <em class="serif-it not-italic">Fluent Python</em>
-  </span>
-  <h1 class="font-extrabold leading-[1.02] mt-8 reveal" style="font-size: clamp(3rem, 7.5vw, 5.4rem); animation-delay:.28s">
-    Learn Python
-    <span class="serif-it squiggle-underline" style="color:var(--coral); font-weight:400">in&#8209;depth
-      <svg viewBox="0 0 200 14" fill="none" stroke="#f9d157" stroke-width="5" stroke-linecap="round"><path d="M4 9 Q 22 2 40 9 T 76 9 T 112 9 T 148 9 T 192 9"/></svg>
+<!-- ===== hero: asymmetric split ===== -->
+<section class="p1-hero max-w-6xl mx-auto px-6 pt-12 lg:pt-20 pb-16" x-data="postcardDemo()">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow-chip reveal" style="animation-delay:.1s">
+        <svg width="14" height="14" viewBox="0 0 30 30" fill="#fd7a56"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
+        A Companion to Luciano Ramalho's <em class="serif-it not-italic">Fluent Python</em>
+      </span>
+      <h1 class="font-extrabold leading-[1.0] mt-7 reveal" style="font-size: clamp(2.9rem, 6vw, 5rem); animation-delay:.22s">
+        Learn Python
+        <span class="serif-it squiggle-underline" style="color:var(--coral); font-weight:400">in&#8209;depth
+          <svg viewBox="0 0 200 14" fill="none" stroke="#f9d157" stroke-width="5" stroke-linecap="round"><path d="M4 9 Q 22 2 40 9 T 76 9 T 112 9 T 148 9 T 192 9"/></svg>
+        </span>
+      </h1>
+      <p class="text-lg md:text-xl mt-8 max-w-md leading-relaxed opacity-90 reveal" style="animation-delay:.36s">
+        Short lessons from the best Python book ever written, then real exercises
+        checked right in your text editor. Warm water, deep ideas.
+      </p>
+      <div class="flex flex-wrap gap-4 mt-9 reveal" style="animation-delay:.5s">
+        <a href="{% if first_module %}{% url 'modules:module_detail' first_module.slug %}{% else %}#modules{% endif %}" class="btn-sunrise">Start with chapter one</a>
+        <button class="btn-shell" @click="toggle()" x-text="flipped ? '↩ Back to the beach' : 'How it works'">How it works</button>
+      </div>
+    </div>
+
+    <div class="hero-art reveal" style="animation-delay:.66s">
+      {% include "partials/postcard.html" %}
+    </div>
+  </div>
+</section>
+
+<!-- ===== collection: horizontal album ===== -->
+<section id="modules" class="pt-6 pb-24">
+  <div class="max-w-6xl mx-auto px-6 flex flex-wrap items-end justify-between gap-4 mb-2">
+    <div>
+      <h2 class="text-4xl md:text-5xl font-extrabold reveal">The Collection</h2>
+      <p class="serif-it text-2xl mt-2 reveal" style="color:var(--teal); animation-delay:.1s">two stamps issued, twenty-eight to come</p>
+    </div>
+    <span class="drag-hint reveal" style="animation-delay:.2s">
+      drag to flip through
+      <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h18M14 1l5 5-5 5"/></svg>
     </span>
-  </h1>
-  <p class="text-lg md:text-xl mt-9 max-w-xl mx-auto leading-relaxed opacity-90 reveal" style="animation-delay:.42s">
-    Short lessons from the best Python book ever written, then real exercises
-    checked right in your text editor. Warm water, deep ideas.
-  </p>
-  <div class="flex flex-wrap justify-center gap-4 mt-9 reveal" style="animation-delay:.55s">
-    <a href="{% if first_module %}{% url 'modules:module_detail' first_module.slug %}{% else %}#modules{% endif %}" class="btn-sunrise">Start with chapter one</a>
-    <button class="btn-shell" @click="toggle()" x-text="flipped ? '↩ Back to the beach' : 'How it works'">How it works</button>
   </div>
 
-  <!-- understated postcard scene -->
-  <div class="postcard max-w-3xl mx-auto mt-16 reveal" style="animation-delay:.7s">
-    <div class="postcard-stamp">
-      <div class="postcard-stamp-inner">
-        <p class="display font-black text-lg leading-none" style="color:var(--coral)">01</p>
-        <p class="mono text-[.5rem] mt-1 uppercase tracking-[.14em]">ipanema</p>
-      </div>
-    </div>
-    <div class="postmark">first<br>class<br>· 2026 ·</div>
-    <div class="flip-wrap" :class="flipped && 'is-flipped'">
-    <div class="face face-front">
-    <div class="postcard-scene grain-scene sunset-sky" style="height: 100%; min-height: 380px">
-      <div class="sun-rays"></div>
-      <div class="sun-disc"></div>
-      <svg class="wave-band drift-slow" style="bottom: 64px" viewBox="0 0 1200 60" preserveAspectRatio="none" height="52">
-        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#369383" opacity=".85"/>
-      </svg>
-      <svg class="wave-band drift-fast" style="bottom: 32px" viewBox="0 0 1200 60" preserveAspectRatio="none" height="52">
-        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#2a7d70"/>
-      </svg>
-      <svg class="wave-band" style="bottom: 0" viewBox="0 0 1200 60" preserveAspectRatio="none" height="56">
-        <path d="M0 30 Q 75 0 150 30 T 300 30 T 450 30 T 600 30 T 750 30 T 900 30 T 1050 30 T 1200 30 V 60 H 0 Z" fill="#1d4f48"/>
-      </svg>
-      <div class="palm palm-sway" style="left: -24px">
-        <svg width="180" height="248" viewBox="0 0 240 330" fill="#143732">
-          <path d="M118 330 C 112 250 104 180 88 120 L 104 116 C 122 178 130 250 134 330 Z"/>
-          <path d="M96 122 C 60 96 24 92 -8 104 C 20 70 70 70 100 104 Z"/>
-          <path d="M96 118 C 70 84 40 64 2 60 C 44 40 88 70 104 108 Z"/>
-          <path d="M98 112 C 92 70 100 34 124 8 C 128 48 118 86 106 112 Z"/>
-          <path d="M102 112 C 124 80 156 62 196 62 C 168 92 132 108 108 116 Z"/>
-          <path d="M104 116 C 140 100 178 102 208 122 C 172 134 132 128 106 120 Z"/>
-          <circle cx="92" cy="118" r="9"/>
-          <circle cx="110" cy="124" r="9"/>
-        </svg>
-      </div>
-      <div class="palm palm-sway" style="right: -32px; animation-delay: -3.2s">
-        <svg width="165" height="210" viewBox="0 0 240 330" fill="#143732" style="transform: scaleX(-1)">
-          <path d="M118 330 C 112 250 104 180 88 120 L 104 116 C 122 178 130 250 134 330 Z"/>
-          <path d="M96 122 C 60 96 24 92 -8 104 C 20 70 70 70 100 104 Z"/>
-          <path d="M96 118 C 70 84 40 64 2 60 C 44 40 88 70 104 108 Z"/>
-          <path d="M98 112 C 92 70 100 34 124 8 C 128 48 118 86 106 112 Z"/>
-          <path d="M102 112 C 124 80 156 62 196 62 C 168 92 132 108 108 116 Z"/>
-          <path d="M104 116 C 140 100 178 102 208 122 C 172 134 132 128 106 120 Z"/>
-          <circle cx="92" cy="118" r="9"/>
-          <circle cx="110" cy="124" r="9"/>
-        </svg>
-      </div>
-      <div class="postcard-caption">
-        <p class="text-[.6rem] font-bold tracking-[.42em] uppercase" style="color:rgba(255,248,236,.9)">greetings from</p>
-        <p class="display font-black text-4xl tracking-tight" style="color:#fff8ec; text-shadow: 3px 3px 0 rgba(20,55,50,.4)">IPANEMA</p>
-      </div>
-    </div>
-    </div>
-    <div class="face face-back">{% include "partials/demo_postcard.html" %}</div>
-    </div>
-    <p class="serif-it text-center text-xl mt-4" style="color:var(--teal)" x-show="!flipped">wish you were here — the REPL is lovely this time of year</p>
-    <p class="serif-it text-center text-xl mt-4" style="color:var(--teal)" x-show="flipped" x-cloak>p.s. that's a real exercise from chapter one</p>
-  </div>
-</section>
-
-<!-- modules -->
-<section id="modules" class="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-  <div class="text-center mb-12">
-    <h2 class="text-4xl md:text-5xl font-extrabold reveal">The Collection</h2>
-    <p class="serif-it text-2xl mt-3 reveal" style="color:var(--teal); animation-delay:.1s">two stamps issued, twenty-eight to come</p>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-10">
-    {% for m in available_modules %}
-    <div class="stamp" style="transform: rotate({% cycle '-1.2deg' '1.4deg' %});" x-data="{ open: false }">
-      <div class="stamp-inner p-7">
-        <div class="stamp-cancel">par avion<br>·&nbsp;ipanema&nbsp;·</div>
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="mono text-[.62rem] uppercase tracking-[.22em]" style="color:var(--teal)">{{ m.part }}</p>
-            <h3 class="display text-3xl font-black mt-2 leading-tight" style="color:var(--ink-deep)">{{ m.title }}</h3>
-          </div>
-          <div class="stamp-value text-2xl shrink-0" style="color:var(--{{ m.color }})">
-            {{ m.number|stringformat:"02d" }}
-          </div>
-        </div>
-        <p class="serif-it text-xl mt-3" style="color:var(--coral)">{{ m.tagline }}</p>
-        <p class="text-sm mt-3 leading-relaxed opacity-85">{{ m.blurb }}</p>
-
-        <button class="mono mt-5 text-[.72rem] underline decoration-wavy decoration-2 underline-offset-4"
-                style="color:var(--teal); text-decoration-color:var(--aqua)" @click="open = !open"
-                x-text="open ? 'tuck the lessons away −' : 'unroll the lessons +'">unroll the lessons +</button>
-        <ul class="mt-3" x-show="open" x-cloak
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 -translate-y-1"
-            x-transition:enter-end="opacity-100 translate-y-0">
-          {% for lesson in m.lessons %}
-          <li class="lesson-row py-2 flex items-baseline gap-3 text-sm">
-            <span class="mono text-[.74rem]" style="color:var(--coral)">{{ m.number }}.{{ forloop.counter }}</span>
-            <span>{{ lesson.title }}</span>
-          </li>
-          {% endfor %}
-        </ul>
-
-        <div class="flex items-center justify-between mt-6 pt-4" style="border-top: 2px solid var(--ink)">
-          <span class="mono text-[.66rem] uppercase tracking-[.14em] opacity-70">{{ m.lessons|length }} lessons · {{ m.exercise_count }} exercises</span>
-          <a href="{% url 'modules:module_detail' m.slug %}" class="btn-sunrise !py-2 !px-5 text-sm">Wade in →</a>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-
-    {% for m in coming_modules %}
-    <div class="stamp opacity-85" style="transform: rotate({% cycle '1deg' '-1.3deg' '0.8deg' '-0.7deg' %});">
-      <div class="stamp-inner p-7" style="background:#f8edd9">
-        <div class="rubber-stamp">drifting ashore</div>
-        <div class="flex items-start justify-between gap-4 opacity-50">
-          <div>
-            <p class="mono text-[.62rem] uppercase tracking-[.22em]" style="color:var(--teal)">{{ m.part }}</p>
-            <h3 class="display text-3xl font-black mt-2 leading-tight" style="color:var(--ink-deep)">{{ m.title }}</h3>
-          </div>
-          <div class="stamp-value text-2xl shrink-0" style="color:var(--{{ m.color }})">{{ m.number|stringformat:"02d" }}</div>
-        </div>
-        <p class="serif-it text-xl mt-3 opacity-50" style="color:var(--coral)">{{ m.tagline }}</p>
-        <div class="mt-10 pt-4 opacity-50" style="border-top: 2px solid var(--ink)">
-          <span class="mono text-[.66rem] uppercase tracking-[.14em]">unissued · awaits printing</span>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-<!-- method: ticket cards -->
-<section id="shore" class="relative z-10 max-w-5xl mx-auto px-6 pb-28">
-  <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-3">Three waves to fluency</h2>
-  <p class="serif-it text-2xl text-center mb-12" style="color:var(--teal)">your boarding sequence</p>
-  <div class="grid md:grid-cols-3 gap-10">
-    <div class="ticket p-7 text-center">
-      <p class="display text-5xl font-black" style="color:var(--coral)">01</p>
-      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Read the lesson</h3>
-      <p class="text-sm mt-3 opacity-80 leading-relaxed">Short, focused readings distilled from each chapter — the idea, the idiom, the why.</p>
-    </div>
-    <div class="ticket p-7 text-center">
-      <p class="display text-5xl font-black" style="color:var(--green)">02</p>
-      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Write the code</h3>
-      <p class="text-sm mt-3 opacity-80 leading-relaxed">Exercises open in a real text editor. No fill-in-the-blanks — actual Python, your hands.</p>
-    </div>
-    <div class="ticket p-7 text-center">
-      <p class="display text-5xl font-black" style="color:var(--raspberry)">03</p>
-      <h3 class="font-extrabold tracking-[.2em] uppercase text-sm mt-3">Get it checked</h3>
-      <p class="text-sm mt-3 opacity-80 leading-relaxed">Ipanema verifies your solution and stamps your passport. On to the next idiom.</p>
+  <div class="album-wrap">
+    <div class="album">
+      {% for m in available_modules %}
+      <div class="album-item">{% include "partials/stamp_card.html" %}</div>
+      {% endfor %}
+      {% for m in coming_modules %}
+      <div class="album-item">{% include "partials/stamp_coming.html" %}</div>
+      {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- footer -->
-<footer class="relative z-10" style="background:var(--ink-deep); color:#f3ecdc; border-radius: 36px 36px 0 0">
-  <div class="max-w-5xl mx-auto px-6 py-16 text-center">
-    <svg class="mx-auto mb-5" width="34" height="34" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="#f9d157"/><circle cx="13" cy="13" r="6.5" fill="#fd7a56"/></svg>
-    <p class="serif-it text-3xl">see you at the beach, pythonista</p>
-    <p class="text-sm mt-4 opacity-65">Ipanema · Learn Python in-depth · A Companion to Luciano Ramalho's <em>Fluent Python</em></p>
-    <div class="flex justify-center gap-2.5 mt-7">
-      <span class="palette-dot" style="background:var(--coral)"></span>
-      <span class="palette-dot" style="background:var(--yellow)"></span>
-      <span class="palette-dot" style="background:var(--green)"></span>
-      <span class="palette-dot" style="background:var(--aqua)"></span>
-      <span class="palette-dot" style="background:var(--raspberry)"></span>
-    </div>
-  </div>
-</footer>
+{% include "partials/method.html" %}
+{% include "partials/site_footer.html" %}
 
-<script>
-document.addEventListener('alpine:init', () => {
-  Alpine.data('postcardDemo', () => ({
-    flipped: false,
-    lines: [],
-    typing: false,
-    fixed: false,
-    stamped: false,
-    done: false,
-    _run: 0,
-    reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-
-    init() {
-      if (new URLSearchParams(location.search).has('demo')) {
-        this.$nextTick(() => this.toggle());
-      }
-    },
-
-    toggle() {
-      if (this.flipped) {
-        this.flipped = false;
-        this._run++;          // abort any running script
-        return;
-      }
-      this.flipped = true;
-      this.start();
-    },
-
-    async start() {
-      const run = ++this._run;
-      const alive = () => run === this._run;
-      this.lines = [];
-      this.fixed = false;
-      this.stamped = false;
-      this.done = false;
-      this.typing = false;
-
-      const sleep = (ms) => new Promise((r) => setTimeout(r, this.reduced ? 0 : ms));
-      const scroll = () => this.$nextTick(() => {
-        const el = this.$refs.term;
-        if (el) el.scrollTop = el.scrollHeight;
-      });
-      const out = (t, c = '') => { this.lines.push({ t, c }); scroll(); };
-      const type = async (cmd) => {
-        this.lines.push({ t: '$ ', c: 'cmd' });
-        this.typing = true;
-        for (const ch of cmd) {
-          if (!alive()) return;
-          this.lines[this.lines.length - 1].t += ch;
-          scroll();
-          await sleep(26);
-        }
-        this.typing = false;
-        await sleep(380);
-      };
-
-      await sleep(850); if (!alive()) return;
-      await type('ipanema check 1.1'); if (!alive()) return;
-      out('collecting exercise_01.py — 1 check', 'dim');
-      await sleep(700); if (!alive()) return;
-      out('✗ len(deck) raises TypeError:', 'fail');
-      out("  object of type 'FrenchDeck' has no len()", 'fail');
-      await sleep(500); if (!alive()) return;
-      out('  hint: len(x) calls x.__len__() —', 'hint');
-      out('        the dunder name is the contract', 'hint');
-      await sleep(350); if (!alive()) return;
-      out('1 failed · 0.31s', 'failmeta');
-      await sleep(1200); if (!alive()) return;
-
-      this.fixed = true;
-      out('', '');
-      out('… you fix exercise_01.py in your editor', 'dim');
-      await sleep(1400); if (!alive()) return;
-
-      await type('ipanema check 1.1'); if (!alive()) return;
-      out('collecting exercise_01.py — 1 check', 'dim');
-      await sleep(700); if (!alive()) return;
-      out('✓ len(deck) == 52', 'pass');
-      await sleep(400); if (!alive()) return;
-      out('1 passed · 0.28s — Pythonic! ☀', 'passmeta');
-      await sleep(450); if (!alive()) return;
-      this.stamped = true;
-      this.done = true;
-      scroll();
-    },
-  }));
-});
-</script>
+{% include "partials/postcard_demo_script.html" %}
 {% endblock %}
