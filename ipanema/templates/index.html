@@ -8,18 +8,6 @@
 <style>
   /* ===== landing — postcard-from-the-edge layout ===== */
 
-  /* floating doodles */
-  .doodle { position: absolute; pointer-events: none; z-index: 0; }
-  .float-a { animation: floaty 7s ease-in-out infinite alternate; }
-  .float-b { animation: floaty 9s ease-in-out infinite alternate-reverse; }
-  .float-c { animation: floaty 11s ease-in-out infinite alternate; }
-  @keyframes floaty {
-    from { transform: translateY(-10px) rotate(-3deg); }
-    to   { transform: translateY(12px) rotate(4deg); }
-  }
-  .twinkle { animation: twinkle 3.5s ease-in-out infinite; }
-  @keyframes twinkle { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
-
   /* hero */
   .p1-hero { position: relative; z-index: 10; }
   .hero-grid { display: grid; gap: 2.75rem; align-items: center; }
@@ -54,23 +42,11 @@
 
 {% block body %}
 <div class="page-grain"></div>
+{% include "partials/doodle_field.html" %}
 {% include "partials/navbar.html" %}
 
 <!-- ===== hero: asymmetric split ===== -->
 <section class="p1-hero max-w-7xl mx-auto px-6 pt-12 lg:pt-16 pb-16" x-data="postcardDemo()">
-  <!-- doodles -->
-  <div class="doodle twinkle" style="top: 60px; left: 0">
-    <svg width="26" height="26" viewBox="0 0 30 30" fill="#369383"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-  </div>
-  <div class="doodle float-c" style="bottom: 36px; left: 1.5%">
-    <svg width="70" height="36" viewBox="0 0 70 36" fill="none" stroke="#80d8dd" stroke-width="4" stroke-linecap="round">
-      <path d="M3 18 Q 12 4 21 18 T 39 18 T 57 18 T 67 18"/>
-    </svg>
-  </div>
-  <div class="doodle twinkle hidden lg:block" style="top: 30px; right: 3%; animation-delay: -1.4s">
-    <svg width="20" height="20" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-  </div>
-
   <div class="hero-grid">
     <div class="hero-copy">
       <span class="eyebrow-chip reveal" style="animation-delay:.1s">
@@ -100,18 +76,7 @@
 </section>
 
 <!-- ===== collection: vertical grid ===== -->
-<section id="modules" class="relative pt-8 pb-24">
-  <!-- doodles -->
-  <div class="doodle twinkle" style="top: 24px; right: 4%; animation-delay: -2.1s">
-    <svg width="28" height="28" viewBox="0 0 30 30" fill="#27ba76"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-  </div>
-  <div class="doodle float-a" style="bottom: 80px; left: 2.5%">
-    <svg width="54" height="54" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#fd7a56"/><circle cx="32" cy="32" r="20" fill="#fff3d6"/><g stroke="#fd7a56" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="50"/><line x1="14" y1="32" x2="50" y2="32"/><line x1="19" y1="19" x2="45" y2="45"/><line x1="45" y1="19" x2="19" y2="45"/></g></svg>
-  </div>
-  <div class="doodle twinkle hidden md:block" style="bottom: 30%; right: 5%; animation-delay: -.7s">
-    <svg width="22" height="22" viewBox="0 0 30 30" fill="#de4a66"><path d="M15 0 L18 12 L30 15 L18 18 L15 30 L12 18 L0 15 L12 12 Z"/></svg>
-  </div>
-
+<section id="modules" class="relative z-10 pt-8 pb-24">
   <div class="max-w-5xl mx-auto px-6">
     <div class="text-center mb-12">
       <h2 class="text-4xl md:text-5xl font-extrabold reveal">The Collection</h2>

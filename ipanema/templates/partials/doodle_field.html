@@ -1,0 +1,83 @@
+<!-- static, tiled beach-doodle background (WhatsApp-style) -->
+<style>
+  .doodle-field {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; opacity: .42;
+  }
+  .doodle-field svg { width: 100%; height: 100%; display: block; }
+</style>
+<div class="doodle-field" aria-hidden="true">
+  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <g id="d-sun" fill="none" stroke-width="2.6" stroke-linecap="round">
+        <circle r="8.5"/>
+        <line x1="13" y1="0" x2="19" y2="0"/>
+        <line x1="9.19" y1="9.19" x2="13.43" y2="13.43"/>
+        <line x1="0" y1="13" x2="0" y2="19"/>
+        <line x1="-9.19" y1="9.19" x2="-13.43" y2="13.43"/>
+        <line x1="-13" y1="0" x2="-19" y2="0"/>
+        <line x1="-9.19" y1="-9.19" x2="-13.43" y2="-13.43"/>
+        <line x1="0" y1="-13" x2="0" y2="-19"/>
+        <line x1="9.19" y1="-9.19" x2="13.43" y2="-13.43"/>
+      </g>
+      <g id="d-palm" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 22 Q -1 6 -3 -6"/>
+        <path d="M-3 -6 Q -16 -11 -27 -7"/>
+        <path d="M-3 -6 Q -15 -19 -23 -23"/>
+        <path d="M-3 -6 Q 2 -23 13 -25"/>
+        <path d="M-3 -6 Q 17 -15 25 -10"/>
+        <path d="M-3 -6 Q 15 -1 23 5"/>
+        <circle cx="-1" cy="-1" r="1.6"/>
+        <circle cx="4" cy="1" r="1.6"/>
+      </g>
+      <g id="d-cocktail" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-12 -10 L12 -10 L0 5 Z"/>
+        <path d="M0 5 L0 16"/>
+        <path d="M-8 16 L8 16"/>
+        <path d="M-7 -6 L7 -6"/>
+        <path d="M3 -10 L10 -21"/>
+        <circle cx="10" cy="-22" r="1.8"/>
+      </g>
+      <g id="d-pineapple" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-9 -1 Q -11 17 0 20 Q 11 17 9 -1 Q 0 -5 -9 -1 Z"/>
+        <path d="M-7 4 L0 -1"/><path d="M0 -1 L7 4"/>
+        <path d="M-7 10 L0 5"/><path d="M0 5 L7 10"/>
+        <path d="M-5 15 L0 11"/><path d="M0 11 L5 15"/>
+        <path d="M0 -1 L-6 -12"/><path d="M0 -1 L0 -16"/><path d="M0 -1 L6 -12"/>
+      </g>
+      <g id="d-citrus" fill="none" stroke-width="2.4" stroke-linecap="round">
+        <circle r="10.5"/>
+        <circle r="7.5"/>
+        <line x1="0" y1="0" x2="7.5" y2="0"/>
+        <line x1="0" y1="0" x2="3.75" y2="6.5"/>
+        <line x1="0" y1="0" x2="-3.75" y2="6.5"/>
+        <line x1="0" y1="0" x2="-7.5" y2="0"/>
+        <line x1="0" y1="0" x2="-3.75" y2="-6.5"/>
+        <line x1="0" y1="0" x2="3.75" y2="-6.5"/>
+      </g>
+      <g id="d-wave" fill="none" stroke-width="2.6" stroke-linecap="round">
+        <path d="M-22 0 Q -14 -9 -7 0 T 8 0 T 23 0"/>
+      </g>
+      <g id="d-star" fill="none" stroke-width="2.6" stroke-linejoin="round">
+        <path d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z"/>
+      </g>
+
+      <pattern id="beach-doodles" width="480" height="480" patternUnits="userSpaceOnUse">
+        <use href="#d-sun"       transform="translate(58 68) scale(1.1)"  stroke="#fd7a56"/>
+        <use href="#d-palm"      transform="translate(214 64) rotate(-6)"  stroke="#27ba76"/>
+        <use href="#d-cocktail"  transform="translate(372 92) rotate(8)"   stroke="#de4a66"/>
+        <use href="#d-star"      transform="translate(140 152) scale(.8)"  stroke="#f9d157"/>
+        <use href="#d-wave"      transform="translate(424 176)"            stroke="#369383"/>
+        <use href="#d-citrus"    transform="translate(70 232) rotate(12)"  stroke="#f4953f"/>
+        <use href="#d-pineapple" transform="translate(298 206) rotate(-7)" stroke="#369383"/>
+        <use href="#d-star"      transform="translate(418 300) scale(.65)" stroke="#fd7a56"/>
+        <use href="#d-palm"      transform="translate(150 332) rotate(9)"  stroke="#5bb6a6"/>
+        <use href="#d-cocktail"  transform="translate(64 396) rotate(-10)" stroke="#27ba76"/>
+        <use href="#d-sun"       transform="translate(262 380) scale(.9)"  stroke="#de4a66"/>
+        <use href="#d-wave"      transform="translate(388 428)"            stroke="#f9d157"/>
+        <use href="#d-citrus"    transform="translate(196 442) rotate(-8)" stroke="#fd7a56"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#beach-doodles)"/>
+  </svg>
+</div>
