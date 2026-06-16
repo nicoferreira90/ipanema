@@ -27,11 +27,22 @@
   .hero-art  { position: relative; z-index: 2; display: flex; justify-content: center; }
   .hero-art .postcard { width: 100%; max-width: 400px; }
 
+  /* stacked (below lg): centre the copy so it lines up with the centred postcard */
+  .hero-copy { text-align: center; }
+  .hero-copy .eyebrow-chip,
+  .hero-copy .hero-actions { justify-content: center; }
+  .hero-copy p { margin-left: auto; margin-right: auto; }
+
   @media (min-width: 1024px) {
-    .hero-grid { grid-template-columns: 1.06fr 0.94fr; gap: 3.25rem; min-height: 66vh; }
+    .hero-grid { grid-template-columns: 1.06fr 0.94fr; gap: 3.25rem; align-items: start; }
     .hero-art { justify-content: flex-end; }
     .hero-art .postcard { max-width: 468px; transform: rotate(2.2deg); }
     .hero-art .postcard:hover { transform: rotate(1deg) translateY(-4px); }
+    /* two-column: copy back to left-aligned editorial */
+    .hero-copy { text-align: left; }
+    .hero-copy .eyebrow-chip,
+    .hero-copy .hero-actions { justify-content: flex-start; }
+    .hero-copy p { margin-left: 0; margin-right: 0; }
   }
 
   /* collection grid */
@@ -76,7 +87,7 @@
         Short lessons from the best Python book ever written, then real exercises
         checked right in your text editor. Warm water, deep ideas.
       </p>
-      <div class="flex flex-wrap gap-4 mt-9 reveal" style="animation-delay:.5s">
+      <div class="hero-actions flex flex-wrap gap-4 mt-9 reveal" style="animation-delay:.5s">
         <a href="{% if first_module %}{% url 'modules:module_detail' first_module.slug %}{% else %}#modules{% endif %}" class="btn-sunrise">Start with chapter one</a>
         <button class="btn-shell" @click="toggle()" x-text="flipped ? '↩ Back to the beach' : 'How it works'">How it works</button>
       </div>
