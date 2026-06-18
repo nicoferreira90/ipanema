@@ -85,13 +85,30 @@
     font-size: .64rem; letter-spacing: .14em; text-transform: uppercase;
     color: rgba(31, 75, 68, .55);
   }
+  /* gutter + editor share one type metric so the numbers line up row-for-row */
+  .editor-wrap { display: flex; align-items: stretch; }
+  .editor-gutter {
+    flex: 0 0 auto; overflow: hidden;
+    background: rgba(31, 75, 68, .035);
+    border-right: 1px solid rgba(31, 75, 68, .12);
+    user-select: none; -webkit-user-select: none;
+  }
+  .editor-gutter-inner {
+    font-family: "Fragment Mono", monospace;
+    font-size: .82rem; line-height: 1.7;
+    padding: .9rem .55rem .9rem .8rem;
+    text-align: right; white-space: pre;
+    color: rgba(31, 75, 68, .38);
+    will-change: transform;
+  }
   .editor {
-    width: 100%; border: none; outline: none; resize: vertical;
+    flex: 1 1 auto; min-width: 0;
+    border: none; outline: none; resize: vertical;
     background: transparent; color: var(--ink-deep);
     font-family: "Fragment Mono", monospace;
     font-size: .82rem; line-height: 1.7;
     padding: .9rem 1.1rem; min-height: 180px; display: block;
-    tab-size: 4;
+    tab-size: 4; overflow-x: auto;
   }
   .editor::placeholder { color: rgba(31, 75, 68, .4); }
 

@@ -19,8 +19,11 @@ Params (via {% include with %}):
       <span class="term-dot" style="background:#6ee7a8"></span>
       <span style="margin-left:.4rem">main.py</span>
     </div>
-    <textarea class="editor" data-editor spellcheck="false"
-              placeholder="{{ placeholder|default:'# write your solution here' }}"></textarea>
+    <div class="editor-wrap">
+      <div class="editor-gutter" aria-hidden="true"><div class="editor-gutter-inner" data-gutter>1</div></div>
+      <textarea class="editor" data-editor spellcheck="false" wrap="off"
+                placeholder="{{ placeholder|default:'# write your solution here' }}"></textarea>
+    </div>
   </div>
 
   <div class="runner-bar">
@@ -31,7 +34,7 @@ Params (via {% include with %}):
   <div class="term">
     <div class="term-head">
       <span class="term-dot" style="background:rgba(255,249,239,.3)"></span>
-      python · pyodide
+      python
     </div>
     <div class="term-body" data-output><span class="term-line dim">Press Run to execute your code in the browser.</span></div>
     <div class="passed-stamp" data-stamp>passed</div>

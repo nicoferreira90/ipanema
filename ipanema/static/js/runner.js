@@ -42,6 +42,7 @@
 
   function initRunner(root) {
     var editor = root.querySelector("[data-editor]");
+    var gutter = root.querySelector("[data-gutter]");
     var runBtn = root.querySelector("[data-run]");
     var status = root.querySelector("[data-status]");
     var output = root.querySelector("[data-output]");
@@ -57,8 +58,25 @@
         var a = editor.selectionStart, b = editor.selectionEnd;
         editor.value = editor.value.slice(0, a) + "    " + editor.value.slice(b);
         editor.selectionStart = editor.selectionEnd = a + 4;
+        renderGutter();
       }
     });
+
+    function renderGutter() {
+      if (!gutter) return;
+      var count = editor.value.split("\n").length || 1;
+      if (gutter.dataset.count === String(count)) return;
+      gutter.dataset.count = count;
+      var nums = "";
+      for (var i = 1; i <= count; i++) nums += (i > 1 ? "\n" : "") + i;
+      gutter.textContent = nums;
+    }
+    function syncGutter() {
+      if (gutter) gutter.style.transform = "translateY(" + -editor.scrollTop + "px)";
+    }
+    editor.addEventListener("input", renderGutter);
+    editor.addEventListener("scroll", syncGutter);
+    renderGutter();
 
     function setStatus(text, cls) {
       status.className = "runner-status" + (cls ? " " + cls : "");
