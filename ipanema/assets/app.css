@@ -1,0 +1,16 @@
+/* Tailwind + DaisyUI entry point, compiled to ipanema/static/css/app.css.
+ *
+ *   build once:  npm run build:css
+ *   watch:       npm run watch:css   (or the `css` service in docker-compose)
+ *
+ * The project's hand-written design system still lives in the inline <style>
+ * blocks in partials/theme.html and modules/partials/modules_styles.html; this
+ * file only provides the Tailwind utility layer and DaisyUI components.
+ *
+ * source(none) disables Tailwind's automatic file scanning so we only walk the
+ * Django templates (keeps the 16 MB course PDF and .venv out of the scan).
+ */
+@import "tailwindcss" source(none);
+@source "../templates";
+
+@plugin "daisyui";

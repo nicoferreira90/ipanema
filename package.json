@@ -1,0 +1,14 @@
+{
+  "name": "ipanema",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tailwind CSS build for the Ipanema Django app.",
+  "scripts": {
+    "build:css": "tailwindcss -i ./ipanema/assets/app.css -o ./ipanema/static/css/app.css --minify",
+    "watch:css": "tailwindcss -i ./ipanema/assets/app.css -o ./ipanema/static/css/app.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "daisyui": "^5.0.0"
+  }
+}

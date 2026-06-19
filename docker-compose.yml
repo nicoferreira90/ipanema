@@ -18,6 +18,17 @@ services:
       - 8001:8000
     depends_on:
       - db
+  css:
+    # rebuilds ipanema/static/css/app.css on every template change during dev
+    image: node:22-slim
+    working_dir: /code
+    command: >
+      sh -c "npm ci &&
+             npx tailwindcss -i ./ipanema/assets/app.css -o ./ipanema/static/css/app.css --watch=always"
+    volumes:
+      - .:/code
+      # keep the container's node_modules from being shadowed by the host mount
+      - /code/node_modules
   db:
     image: postgres:17
     container_name: ipanema-db
