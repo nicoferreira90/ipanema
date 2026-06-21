@@ -7,18 +7,19 @@ status: available
 project:
   title: Inverted Index
   brief: |
-    Build the data structure behind every search engine. An **inverted index**
+    Build the data structure behind every search engine. An inverted index
     maps each word to the documents it appears in.
 
     Write `build_index(docs)` where `docs` is a list of `(doc_id, text)`
     tuples. Split each `text` on whitespace, lowercase every word, and record
     which documents contain it.
 
-    Return a dict mapping each word to a **sorted list** of the distinct
-    `doc_id`s that contain it.
+    Return a dict mapping each word to a sorted list of the distinct `doc_id`s
+    that contain it.
 
-    Use the chapter: `setdefault` (or a `defaultdict`) to grow the entries, a
-    **set** to dedupe the ids, and a dict comprehension to finish. ~12–18 lines.
+    Use what the chapter covered: `setdefault` or a `defaultdict` to grow the
+    entries, a set to remove duplicate ids, and a dict comprehension to finish.
+    Aim for about 12 to 18 lines.
   check: |
     docs = [
         (1, 'the cat sat'),

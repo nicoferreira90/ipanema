@@ -7,22 +7,22 @@ status: available
 project:
   title: A Pythonic 2D Vector
   brief: |
-    Tie the whole chapter together. Write a `Vector` class for 2D vectors that
-    feels native to Python — the interpreter should do the work through your
-    special methods, not through named helpers.
+    Write a `Vector` class for 2D vectors that feels native to Python. The
+    interpreter should do the work through your special methods, not through
+    methods you call by name.
 
     Your `Vector` must support:
 
-    - `Vector(3, 4)` — store `x` and `y`.
-    - `repr(v)` → the string `'Vector(3, 4)'` (round-trips to source).
-    - `abs(v)` → the magnitude, `math.hypot(x, y)`.
-    - `v1 + v2` → a new `Vector` of the component sums.
-    - `v * n` → scale by a number, returning a new `Vector`.
-    - `v1 == v2` → `True` when both components match.
-    - `bool(v)` → `False` only for the zero vector.
+    - `Vector(3, 4)` stores `x` and `y`.
+    - `repr(v)` gives the string `'Vector(3, 4)'`, which round-trips to source.
+    - `abs(v)` gives the magnitude, `math.hypot(x, y)`.
+    - `v1 + v2` gives a new `Vector` whose components are the two added together.
+    - `v * n` scales by a number and returns a new `Vector`.
+    - `v1 == v2` is `True` when both components match.
+    - `bool(v)` is `False` only for the zero vector.
 
-    Don't call any dunder directly in your tests — use `+`, `*`, `==`, `abs`,
-    `repr`, `bool` and let Python dispatch. ~15–20 lines.
+    Do not call any dunder directly in your tests. Use `+`, `*`, `==`, `abs`,
+    `repr`, and `bool`, and let Python dispatch. Aim for about 15 to 20 lines.
   check: |
     import math
     v = Vector(3, 4)

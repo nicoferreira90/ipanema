@@ -9,18 +9,12 @@ check: |
 ---
 
 `collections.Counter` is a dict built for counting. Feed it any iterable and it
-tallies the items for you:
+tallies the items for you. `Counter('abracadabra')` reports five `a`s and two
+each of `b` and `r`. You can add more with `c.update(['a', 'a'])`, and
+`c.most_common(2)` returns the two highest counts already sorted.
 
-```python
-from collections import Counter
-
-c = Counter('abracadabra')      # {'a': 5, 'b': 2, 'r': 2, ...}
-c.update(['a', 'a'])            # add more
-c.most_common(2)               # [('a', 7), ('b', 2)]
-```
-
-Missing keys read as `0`, never raising, so `c['z']` is just `0`. The star
-feature is `most_common(n)`, which returns the `n` highest counts already sorted
-— perfect for "top words", "top errors", or any leaderboard. Counters also add
-and subtract like multisets (`c1 + c2`). It's one of the quietly most useful
+Missing keys read as `0` and never raise, so `c['z']` is just `0`. The standout
+feature is `most_common(n)`, which returns the `n` highest counts in order. That
+is perfect for top words, top errors, or any leaderboard. Counters also add and
+subtract like multisets, as in `c1 + c2`. It is one of the quietly most useful
 tools in the standard library.

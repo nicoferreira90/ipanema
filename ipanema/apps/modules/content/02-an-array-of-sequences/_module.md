@@ -7,18 +7,18 @@ status: available
 project:
   title: Tournament Standings
   brief: |
-    Pull the chapter together with one function. Given a season's results,
-    compute the league table.
+    Compute a league table from a season's results with a single function.
 
     Write `standings(matches)` where `matches` is a list of
-    `(home, away, home_goals, away_goals)` tuples. Score each game — a win is
-    **3** points, a draw **1**, a loss **0** — and total the points per team.
+    `(home, away, home_goals, away_goals)` tuples. Score each game, where a win
+    is worth 3 points, a draw 1, and a loss 0, then total the points per team.
 
-    Return a list of `(team, points)` tuples sorted by points **descending**,
-    breaking ties by team name **ascending**.
+    Return a list of `(team, points)` tuples sorted by points from highest to
+    lowest, breaking ties by team name in alphabetical order.
 
-    Lean on the chapter: unpack each tuple in the `for`, accumulate in a dict,
-    then `sorted(..., key=...)` with a tuple key. ~15–20 lines.
+    Use what the chapter covered: unpack each tuple in the `for` loop,
+    accumulate the totals in a dict, then sort with `sorted(..., key=...)` and a
+    tuple key. Aim for about 15 to 20 lines.
   check: |
     matches = [
         ('A', 'B', 1, 0),

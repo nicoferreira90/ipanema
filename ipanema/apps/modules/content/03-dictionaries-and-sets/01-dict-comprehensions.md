@@ -9,21 +9,15 @@ check: |
   assert to_dict(['x'], [9]) == {'x': 9}
 ---
 
-A **dict comprehension** builds a dict from any iterable of key–value pairs, the
-same way a listcomp builds a list:
+A dict comprehension builds a dict from any iterable of key-value pairs, the
+same way a list comprehension builds a list. Given
+`pairs = [('a', 1), ('b', 2)]`, the expression `{k: v for k, v in pairs}`
+rebuilds them as a dict.
 
-```python
-pairs = [('a', 1), ('b', 2)]
-d = {k: v for k, v in pairs}
-```
+`zip` makes the pairs when your keys and values live in separate sequences, as
+in `{name: code for name, code in zip(names, codes)}`.
 
-`zip` makes the pairs when your keys and values live in separate sequences:
-
-```python
-{name: code for name, code in zip(names, codes)}
-```
-
-You can transform or filter as you go — flip keys and values with
+You can transform or filter as you go. Flip keys and values with
 `{v: k for k, v in d.items()}`, or keep only some entries with an `if`. Modern
-dicts also merge with `|` (`a | b`) and unpack with `**` (`{**a, **b}`) — both
-produce a new dict, leaving the originals untouched.
+dicts also merge with `|`, as in `a | b`, and unpack with `**`, as in
+`{**a, **b}`. Both produce a new dict and leave the originals untouched.
