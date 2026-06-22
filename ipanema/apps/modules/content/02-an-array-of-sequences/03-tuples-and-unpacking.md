@@ -1,9 +1,11 @@
 ---
 title: Tuples as Records & Unpacking
 exercise: |
-  Write `midpoint(p1, p2)` where each point is an `(x, y)` tuple. Unpack both
-  points and return the midpoint as a new `(x, y)` tuple. Averaging gives
-  floats, so expect values like `2.0`.
+  Write a function named `midpoint(p1, p2)`. Each argument is a point given as
+  an `(x, y)` tuple, like `(4, 2)`. Inside the function, unpack both points into
+  their x and y values, average the two x values and the two y values, then
+  return the result as a new `(x, y)` tuple. Divide with `/` so the values come
+  back as floats, which means `midpoint((0, 0), (4, 2))` returns `(2.0, 1.0)`.
 check: |
   assert midpoint((0, 0), (4, 2)) == (2.0, 1.0)
   assert midpoint((1, 1), (1, 1)) == (1.0, 1.0)
