@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ module.title }} — Ipanema{% endblock %}
+{% block title %}{{ module.title }}: Ipanema{% endblock %}
 
 {% block head %}
 {% include "partials/theme.html" %}
@@ -43,7 +43,7 @@
     {% endif %}
 
     <div class="flex items-center gap-3 mt-8 reveal" style="animation-delay:.3s">
-      <span class="mono text-[.72rem] uppercase tracking-[.16em] opacity-70">
+      <span class="mono text-[.72rem] uppercase tracking-[.16em]" style="color:var(--teal-deep); font-weight:600">
         {{ done_count }} / {{ lessons|length }} lessons collected
       </span>
       {% if module_done %}
