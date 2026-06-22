@@ -1,6 +1,6 @@
 ---
 title: Dictionaries and Sets
-part: Part I — Data Structures
+part: "Part I: Data Structures"
 tagline: Hash tables, the engine room of Python
 color: yellow
 status: available
@@ -34,6 +34,6 @@ project:
     assert 'CAT' not in idx, "words are lowercased"
 ---
 
-Seven short lessons on Python's mappings and sets — the hash-table machinery the
+Seven short lessons on Python's mappings and sets: the hash-table machinery the
 whole language leans on. Comprehensions, smart defaults, `Counter`, and set
 algebra, then an inverted index that puts them to work.

@@ -1,6 +1,6 @@
 ---
 title: An Array of Sequences
-part: Part I — Data Structures
+part: "Part I: Data Structures"
 tagline: Lists, tuples, slices & the sequence protocol
 color: teal
 status: available
@@ -33,6 +33,6 @@ project:
     assert draw == [('X', 1), ('Y', 1)], draw
 ---
 
-Seven short lessons on Python's sequences — the workhorses of the language.
+Seven short lessons on Python's sequences: the workhorses of the language.
 Comprehensions, tuple unpacking, slicing, and the sharp edges of `+` and `*`,
 then a league table that ties them all together.

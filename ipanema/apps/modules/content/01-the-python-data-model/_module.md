@@ -1,6 +1,6 @@
 ---
 title: The Python Data Model
-part: Part I — Data Structures
+part: "Part I: Data Structures"
 tagline: Dunder methods & the secret life of objects
 color: coral
 status: available

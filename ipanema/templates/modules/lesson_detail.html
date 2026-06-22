@@ -16,11 +16,11 @@
 <main class="relative z-10 max-w-3xl mx-auto px-6 pt-12 pb-28">
 
   <a href="{% url 'modules:module_detail' module.slug %}"
-     class="chapter-eyebrow reveal" style="text-decoration:none">
+     class="back-pill reveal" style="text-decoration:none">
     ← {{ module.number|stringformat:"02d" }} · {{ module.title }}
   </a>
 
-  <p class="mono text-[.7rem] tracking-[.2em] uppercase mt-6 reveal" style="color:var(--coral); animation-delay:.05s">
+  <p class="mono tracking-[.2em] uppercase mt-6 reveal" style="color:var(--coral); font-size:.82rem; font-weight:600; animation-delay:.05s">
     Lesson {{ position }} of {{ total }}
   </p>
   <h1 class="display font-black leading-tight mt-2 reveal"
