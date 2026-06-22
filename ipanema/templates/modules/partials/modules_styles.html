@@ -5,7 +5,7 @@
     display: inline-flex; align-items: center; gap: .55rem;
     font-family: "Fragment Mono", monospace;
     font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--teal);
+    color: var(--teal-deep);
   }
 
   /* ---- philatelic lesson checklist ---- */
@@ -52,6 +52,20 @@
 
   /* ---- lesson prose ---- */
   .prose { line-height: 1.72; font-size: 1.06rem; }
+  /* reading surface: a translucent letter-panel so running text isn't read
+     straight off the doodle field. Doodles stay faintly visible through it. */
+  .reading-surface {
+    background: rgba(255, 249, 239, .72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    border: 1.5px solid rgba(31, 75, 68, .16);
+    border-radius: 16px;
+    padding: 1.6rem 1.9rem;
+    box-shadow: 0 18px 44px -26px rgba(31, 75, 68, .4);
+  }
+  @media (max-width: 640px) {
+    .reading-surface { padding: 1.2rem 1.3rem; }
+  }
   .prose > * + * { margin-top: 1.05rem; }
   .prose h2, .prose h3 { font-family: "Fraunces", serif; font-weight: 800; }
   .prose code {
