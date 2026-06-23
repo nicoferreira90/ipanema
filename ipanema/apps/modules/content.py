@@ -72,6 +72,7 @@ def _load_module(directory):
             "brief": (project.get("brief") or "").strip(),
             "brief_html": _render(project.get("brief")),
             "check": (project.get("check") or "").strip(),
+            "placeholder": project.get("placeholder", "# write your solution here"),
         }
 
     intro = post.content.strip()

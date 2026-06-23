@@ -6,6 +6,7 @@ color: coral
 status: available
 project:
   title: A Pythonic 2D Vector
+  placeholder: "# build your Vector class here"
   brief: |
     Write a `Vector` class for 2D vectors that feels native to Python. The
     interpreter should do the work through your special methods, not through

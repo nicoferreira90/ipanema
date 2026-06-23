@@ -6,6 +6,7 @@ color: yellow
 status: available
 project:
   title: Inverted Index
+  placeholder: "# write your build_index function here"
   brief: |
     Build the data structure behind every search engine. An inverted index
     maps each word to the documents it appears in.

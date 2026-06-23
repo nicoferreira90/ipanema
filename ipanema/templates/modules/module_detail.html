@@ -78,7 +78,7 @@
 
         <div class="mt-7">
           {% url 'modules:complete_module' module.slug as module_complete_url %}
-          {% include "modules/partials/code_runner.html" with runner_id="project-check" check=module.project.check complete_url=module_complete_url is_project=True done=module_done done_text="Stamp issued — module complete." placeholder="# build your Vector class here" %}
+          {% include "modules/partials/code_runner.html" with runner_id="project-check" check=module.project.check complete_url=module_complete_url is_project=True done=module_done done_text="Stamp issued — module complete." placeholder=module.project.placeholder %}
         </div>
 
         {% if not user.is_authenticated %}

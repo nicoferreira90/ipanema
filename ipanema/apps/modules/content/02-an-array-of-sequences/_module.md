@@ -6,6 +6,7 @@ color: teal
 status: available
 project:
   title: Tournament Standings
+  placeholder: "# write your standings function here"
   brief: |
     Compute a league table from a season's results with a single function.
 
