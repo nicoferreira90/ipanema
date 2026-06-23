@@ -1,9 +1,12 @@
 ---
 title: Star Unpacking
 exercise: |
-  Write `head_tail(seq)` that returns a `(first, rest)` tuple. `first` is the
-  first item and `rest` is a list of everything after it. Use a starred target
-  to do this, not slicing.
+  Write a function named `head_tail(seq)` that takes one sequence and returns a
+  two-item `(first, rest)` tuple. `first` is the first item of `seq`, and `rest`
+  is a list holding every item after the first. Build it with starred unpacking,
+  like `first, *rest = seq`, not by slicing. The starred name is always a list,
+  so when `seq` has only one item, `rest` is the empty list `[]`. For example,
+  `head_tail([1, 2, 3, 4])` returns `(1, [2, 3, 4])`.
 check: |
   assert head_tail([1, 2, 3, 4]) == (1, [2, 3, 4])
   assert head_tail([9]) == (9, [])

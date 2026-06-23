@@ -1,7 +1,7 @@
 ---
 title: Slicing
 exercise: |
-  Write `every_other(seq)` that returns every item at an even index, so
+  Write a function named `every_other(seq)` that returns every item at an even index, so
   positions 0, 2, 4, and so on. A single slice does it, and the same code
   should work for both lists and strings.
 check: |

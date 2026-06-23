@@ -1,7 +1,7 @@
 ---
 title: Generator Expressions
 exercise: |
-  Write `sum_of_squares(n)` that returns the sum of the squares of the numbers
+  Write a function named `sum_of_squares(n)` that returns the sum of the squares of the numbers
   in `range(n)`. Pass a generator expression straight to `sum()`, with no list
   in between.
 check: |

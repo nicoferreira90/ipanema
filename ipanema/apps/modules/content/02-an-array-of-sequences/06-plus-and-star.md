@@ -1,7 +1,7 @@
 ---
 title: Building Sequences with + and *
 exercise: |
-  Write `zeros(n)` that returns an `n` by `n` grid: a list of `n` rows, where
+  Write a function named `zeros(n)` that returns an `n` by `n` grid: a list of `n` rows, where
   each row is a list of `n` zeros. The rows must be independent, so changing one
   cell does not change any other row.
 check: |

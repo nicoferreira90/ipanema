@@ -1,7 +1,7 @@
 ---
 title: Sorting, Keys & When a List Isn't the Answer
 exercise: |
-  Write `by_length(words)` that returns the words sorted by length, shortest
+  Write a function named `by_length(words)` that returns the words sorted by length, shortest
   first, with ties broken alphabetically. Use `sorted` with a `key`, and do not
   mutate the input.
 check: |

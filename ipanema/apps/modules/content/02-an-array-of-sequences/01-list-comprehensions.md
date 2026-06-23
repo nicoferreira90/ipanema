@@ -1,7 +1,7 @@
 ---
 title: List Comprehensions
 exercise: |
-  Write `squares_of_evens(n)` that returns a list with the squares of the even
+  Write a function named `squares_of_evens(n)` that returns a list with the squares of the even
   numbers in `range(n)`. Build it with a single list comprehension.
 check: |
   assert squares_of_evens(6) == [0, 4, 16], "0, 2, 4 squared"
