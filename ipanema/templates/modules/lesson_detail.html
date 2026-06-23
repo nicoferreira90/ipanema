@@ -34,7 +34,7 @@
 
   <section class="exercise-card mt-12 reveal" style="animation-delay:.28s">
     <p class="exercise-tag">✎ exercise · terminal</p>
-    <p class="mt-3 mb-5 leading-relaxed" style="white-space:pre-line">{{ lesson.exercise }}</p>
+    <p class="mt-3 mb-5 leading-relaxed">{{ lesson.exercise }}</p>
 
     {% url 'modules:complete_lesson' module.slug lesson.slug as lesson_complete_url %}
     {% include "modules/partials/code_runner.html" with runner_id="lesson-check" check=lesson.check complete_url=lesson_complete_url is_project=False done=done done_text="Exercise collected — nicely done." placeholder="# write your solution here" %}
