@@ -11,7 +11,7 @@ project:
     Compute a league table from a season's results with a single function.
 
     Write a function named `standings(matches)` where `matches` is a list of
-    `(home, away, home_goals, away_goals)` tuples. Score each game, where a win
+    `(home_team, away_team, home_goals, away_goals)` tuples. Score each game, where a win
     is worth 3 points, a draw 1, and a loss 0, then total the points per team.
 
     Return a list of `(team, points)` tuples sorted by points from highest to
