@@ -1,8 +1,10 @@
 ---
 title: Code Points and Encodings
 exercise: |
-  Write `code_points(text)` that returns a list with the integer code point of
-  each character in `text`, in order. Use `ord`.
+  Write a function `code_points(text)` that returns a list with the integer code point of
+  each character in `text`, in order. Use `ord`. 
+  
+  (Tip: This can be done with a list comprehension)
 check: |
   assert code_points('AB') == [65, 66]
   assert code_points('café') == [99, 97, 102, 233]

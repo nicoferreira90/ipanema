@@ -1,13 +1,15 @@
 ---
 title: Encode and Decode
 exercise: |
-  Write `roundtrip(text, encoding)` that encodes `text` with `encoding`, decodes
-  the bytes back with the same `encoding`, and returns the result. It should
-  equal the original `text`.
+  Write two functions. `to_bytes(text, encoding)` encodes `text` with `encoding`
+  and returns the resulting bytes. `to_text(data, encoding)` takes a bytes object
+  `data` and decodes it back to a str with `encoding`. Using the same encoding
+  both ways, one should undo the other.
 check: |
-  assert roundtrip('café', 'utf-8') == 'café'
-  assert roundtrip('hello', 'ascii') == 'hello'
-  assert roundtrip('niño', 'latin-1') == 'niño'
+  assert to_bytes('café', 'utf-8') == b'caf\xc3\xa9'
+  assert to_text(b'caf\xc3\xa9', 'utf-8') == 'café'
+  assert to_bytes('hello', 'ascii') == b'hello'
+  assert to_text(to_bytes('niño', 'latin-1'), 'latin-1') == 'niño'
 ---
 
 Two methods bridge the gap between text and bytes. `str.encode(encoding)` turns
