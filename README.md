@@ -8,8 +8,7 @@ whole thing wears a sunlit, postcard-and-philately theme.
 ## How it works
 
 - **Lessons and exercises** are plain Markdown files, not database rows. They live
-  under `ipanema/apps/modules/content/` and are parsed at server start. See that
-  folder's [README](ipanema/apps/modules/content/README.md) to author a module.
+  under `ipanema/apps/modules/content/` and are parsed at server start.
 - **The terminal** runs the learner's code entirely in the browser with
   [Pyodide](https://pyodide.org/) (CPython on WebAssembly). Nothing is executed on
   the server.
