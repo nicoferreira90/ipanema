@@ -36,6 +36,12 @@
   .serif-it { font-family: "Instrument Serif", serif; font-style: italic; }
   .display { font-family: "Fraunces", serif; }
   .mono { font-family: "Fragment Mono", monospace; }
+  /* Fragment Mono otherwise fuses ==, !=, ->, >= into one glyph; operators must
+     read as distinct characters in prose code and the terminal alike */
+  code, pre, textarea, .mono, .term-body, .term-line {
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0;
+  }
   [x-cloak] { display: none !important; }
 
   .page-grain {
