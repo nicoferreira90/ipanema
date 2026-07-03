@@ -1,15 +1,21 @@
 ---
 title: Aliasing and Mutation
 exercise: |
-  Write `add_item(box, item)` that appends `item` to the list `box` in place and
-  returns `None`. Because `box` is the caller's list, the change should be visible
-  to every name pointing at it.
+  Write a function `alias_vs_rebind(numbers)` that shows the difference between
+  mutating a shared object and rebinding a name. Inside the function, first make a
+  second name for the same list with `same = numbers` (an alias, not a copy).
+  Append `99` to the list through `same`. Then rebind that name with `same = [0]`,
+  which points `same` at a brand new list. Finally, return `numbers`.
+
+  Because the append went through an alias of the same object, `numbers` ends up
+  with `99` added. Because the rebinding only moved the `same` label, the `[0]`
+  never touches `numbers`.
 check: |
-  shared = [1, 2]
-  also = shared
-  add_item(shared, 3)
-  assert shared == [1, 2, 3]
-  assert also == [1, 2, 3]
+  n = [1, 2]
+  out = alias_vs_rebind(n)
+  assert out == [1, 2, 99]
+  assert n == [1, 2, 99]
+  assert out is n
 ---
 
 Aliases are harmless until something changes. When two names point at the same
